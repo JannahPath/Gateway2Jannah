@@ -21,8 +21,9 @@
 
         body {
             font-family: 'Noto Nastaliq Urdu', serif;
+            /* Yahan background image pic.jpg update kar di gayi hai */
             background: linear-gradient(to bottom, rgba(17, 24, 39, 0.85), rgba(6, 78, 59, 0.95)), 
-                        url('https://images.unsplash.com/photo-1590076215667-872ab694c153?q=80&w=2070&auto=format&fit=crop') center/cover fixed;
+                        url('pic.jpg') center/cover fixed;
             color: var(--text-light);
             margin: 0; padding: 0; min-height: 100vh; overflow-x: hidden;
             display: flex; flex-direction: column;
@@ -48,7 +49,7 @@
             flex-grow: 1; width: 100%; box-sizing: border-box;
         }
 
-        /* Top Floating Controls (Replaces the top bar) */
+        /* Top Floating Controls */
         .top-controls {
             display: flex; justify-content: space-between; align-items: center; width: 100%;
         }
@@ -58,8 +59,6 @@
             border: 1px solid rgba(251, 191, 36, 0.3); display: flex; align-items: center; gap: 8px; font-size: 1.1rem;
             backdrop-filter: blur(10px); box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
-        .theme-toggle { background: none; border: none; font-size: 1.5rem; cursor: pointer; transition: 0.3s; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));}
-        .theme-toggle:hover { transform: rotate(20deg); }
 
         .header-section { text-align: center; margin-bottom: 0px; }
         .header-title { font-size: 3.5rem; color: var(--primary); margin: 0; text-shadow: 0 0 25px rgba(52, 211, 153, 0.5); }
@@ -134,7 +133,7 @@
             box-shadow: 0 20px 40px rgba(0,0,0,0.8), inset 0 5px 10px rgba(255,255,255,0.2); border: 2px solid #4B5563;
         }
 
-        /* --- NEW: REMAINING / SURPLUS BOXES --- */
+        /* Remaining / Surplus Boxes */
         .stats-container {
             display: flex; justify-content: center; gap: 15px; margin-top: 25px; width: 100%; max-width: 320px;
         }
@@ -189,11 +188,10 @@
 
         .hadith-card { border-top: 5px solid var(--gold); }
         
-        /* TICKER FIXED TO NORMAL FLOW (AT BOTTOM) */
         .dua-ticker-container {
             width: 100%; background: rgba(0,0,0,0.7); border-top: 1px solid rgba(251, 191, 36, 0.5);
             color: var(--gold); padding: 12px 0; font-size: 1.3rem; backdrop-filter: blur(5px);
-            margin-top: auto; /* Pushes it to the very bottom */
+            margin-top: auto;
         }
     </style>
 </head>
@@ -206,8 +204,7 @@
     <div class="container">
         
         <div class="top-controls">
-            <button class="theme-toggle" onclick="toggleTheme()" title="Switch Theme">🌙</button>
-            <div class="timer-badge" id="countdownTimer">
+            <div></div> <div class="timer-badge" id="countdownTimer">
                 <span style="font-size:1.2rem;">⏳</span> <span>سحری میں باقی:</span>
                 <span class="english-num" id="timeDigits">00:00:00</span>
             </div>
@@ -316,13 +313,11 @@
         db.ref('sehri_campaign/funds').on('value', (snapshot) => {
             const currentFunds = snapshot.val() || 0;
             
-            // Jar Fill Calculation
             let percentage = (currentFunds / dailyGoal) * 100;
             if (percentage > 100) percentage = 100;
             document.getElementById('jarLiquid').style.height = percentage + '%';
             document.getElementById('progressText').innerText = currentFunds.toLocaleString();
 
-            // NEW: Remaining & Surplus Logic
             const remLabel = document.getElementById('remainingLabel');
             const remValue = document.getElementById('remainingValue');
             const remaining = dailyGoal - currentFunds;
