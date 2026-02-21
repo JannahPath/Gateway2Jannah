@@ -3,401 +3,263 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Free Sehri Point - Ramadan</title>
+    <title>Free Sehri Point - Faisalabad</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+
     <style>
         :root {
             --primary: #065F46;
             --secondary: #10B981;
             --gold: #F59E0B;
-            --bg: #F9FAFB;
-            --text: #1F2937;
-            --glass: rgba(255, 255, 255, 0.8);
-            --jar-bg: rgba(255, 255, 255, 0.3);
+            --bg-gradient: linear-gradient(135deg, #e0f2f1 0%, #fdfbfb 100%);
+            --glass-bg: rgba(255, 255, 255, 0.4);
+            --glass-border: rgba(255, 255, 255, 0.8);
+            --text-dark: #1F2937;
         }
 
         body.dark-mode {
             --primary: #34D399;
-            --bg: #111827;
-            --text: #F9FAFB;
-            --glass: rgba(31, 41, 55, 0.8);
-            --jar-bg: rgba(255, 255, 255, 0.1);
-            background: linear-gradient(135deg, #111827 0%, #1F2937 100%);
+            --bg-gradient: linear-gradient(135deg, #111827 0%, #1F2937 100%);
+            --glass-bg: rgba(31, 41, 55, 0.6);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-dark: #F9FAFB;
         }
 
         body {
             font-family: 'Noto Nastaliq Urdu', serif;
-            background: linear-gradient(135deg, #e0f2f1 0%, #fdfbfb 100%);
-            color: var(--text);
+            background: var(--bg-gradient);
+            color: var(--text-dark);
             margin: 0;
             padding: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
             transition: all 0.5s ease;
         }
 
-        .container {
-            max-width: 600px;
-            width: 100%;
-            text-align: center;
-        }
-
-        /* Top Bar: Dark Mode & Timer */
+        /* Top Bar */
         .top-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            margin-bottom: 20px;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            display: flex; justify-content: space-between; align-items: center;
+            width: 100%; max-width: 600px; margin-bottom: 20px;
+            font-family: sans-serif;
         }
-
         .timer-box {
-            background: var(--glass);
-            padding: 10px 20px;
-            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.8); padding: 10px 20px;
+            border-radius: 20px; font-weight: bold; color: #065F46;
             box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            font-weight: bold;
-            color: var(--primary);
         }
+        body.dark-mode .timer-box { background: rgba(0,0,0,0.5); color: #34D399; }
+        
+        .theme-toggle { background: none; border: none; font-size: 1.5rem; cursor: pointer; }
 
-        .theme-toggle {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
-
-        h1 {
-            font-size: 2.5rem;
-            color: var(--primary);
-            margin-bottom: 5px;
-            line-height: 1.5;
-        }
-
-        /* Emotional Alert */
-        .alert-box {
-            background: #FEE2E2;
-            color: #DC2626;
-            padding: 15px;
-            border-radius: 15px;
-            margin-bottom: 20px;
-            font-size: 1.2rem;
-            font-weight: bold;
-            animation: pulse 2s infinite;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.02); box-shadow: 0 0 15px rgba(220, 38, 38, 0.5); }
-            100% { transform: scale(1); }
-        }
+        .header-title { font-size: 3rem; color: var(--primary); margin-bottom: 5px; text-align: center; }
+        .subtitle { font-family: sans-serif; color: #4B5563; font-weight: bold; margin-bottom: 30px; font-size: 1.2rem; }
+        body.dark-mode .subtitle { color: #9CA3AF; }
 
         /* Animated Jar */
-        .jar-container {
-            width: 180px;
-            height: 280px;
-            background: var(--jar-bg);
-            border: 4px solid var(--primary);
-            border-radius: 20px 20px 40px 40px;
-            margin: 0 auto 30px;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            backdrop-filter: blur(10px);
+        .jar-wrapper { position: relative; margin-bottom: 40px; }
+        .glass-jar {
+            width: 220px; height: 320px;
+            background: var(--glass-bg); border: 4px solid var(--glass-border);
+            border-radius: 20px 20px 50px 50px; position: relative; overflow: hidden;
+            box-shadow: inset 0 0 20px rgba(255,255,255,0.2), 0 15px 35px rgba(0,0,0,0.1);
+            backdrop-filter: blur(15px); z-index: 2;
         }
-
-        .jar-container::after {
-            content: '';
-            position: absolute;
-            top: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100px;
-            height: 20px;
-            background: var(--primary);
-            border-radius: 10px;
+        .glass-jar::before {
+            content: ''; position: absolute; top: -15px; left: 50%; transform: translateX(-50%);
+            width: 120px; height: 30px; background: var(--glass-border); border-radius: 15px;
         }
-
         .liquid {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 30%; /* Starting point */
-            background: linear-gradient(0deg, var(--secondary) 0%, #6EE7B7 100%);
-            transition: height 2s cubic-bezier(0.4, 0, 0.2, 1);
-            border-radius: 0 0 35px 35px;
+            position: absolute; bottom: 0; left: 0; width: 100%; height: 0%;
+            background: linear-gradient(0deg, var(--secondary) 0%, #34D399 100%);
+            border-radius: 0 0 45px 45px; transition: height 2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .liquid::after {
+            content: ''; position: absolute; top: -10px; left: -50%; width: 200%; height: 20px;
+            background: rgba(255, 255, 255, 0.3); border-radius: 50%; animation: wave 3s infinite linear;
+        }
+        @keyframes wave {
+            0% { transform: translateX(0) scaleY(1); }
+            50% { transform: translateX(-25%) scaleY(1.5); }
+            100% { transform: translateX(-50%) scaleY(1); }
+        }
+        .amount-display {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            font-size: 2.2rem; font-weight: bold; color: white;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3); font-family: sans-serif; z-index: 10;
         }
 
-        /* Floating elements inside jar */
-        .bubble {
-            position: absolute;
-            background: rgba(255, 255, 255, 0.6);
-            border-radius: 50%;
-            animation: rise 3s infinite ease-in;
-            bottom: 0;
+        /* Glass Cards */
+        .info-card {
+            background: var(--glass-bg); backdrop-filter: blur(10px);
+            padding: 25px; border-radius: 20px; border: 1px solid var(--glass-border);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05); max-width: 500px; width: 100%;
+            text-align: center; margin-bottom: 20px;
+        }
+        .donate-number {
+            font-size: 1.8rem; color: var(--primary); font-family: sans-serif; font-weight: bold;
+            letter-spacing: 2px; margin: 10px 0; background: rgba(16, 185, 129, 0.2);
+            padding: 10px; border-radius: 10px;
         }
 
-        @keyframes rise {
-            0% { transform: translateY(0) scale(1); opacity: 1; }
-            100% { transform: translateY(-200px) scale(0); opacity: 0; }
-        }
-
-        .progress-text {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: #fff;
-            text-shadow: 1px 1px 5px rgba(0,0,0,0.5);
-            z-index: 10;
-            font-family: -apple-system, sans-serif;
-        }
-
-        /* Impact Calculator */
-        .calculator {
-            background: var(--glass);
-            padding: 20px;
-            border-radius: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-        }
-
-        input[type=range] {
-            width: 100%;
-            margin: 15px 0;
-            accent-color: var(--secondary);
-        }
+        /* Impact Slider */
+        input[type=range] { width: 100%; margin: 15px 0; accent-color: var(--secondary); }
 
         /* Buttons */
-        .btn {
-            background: linear-gradient(90deg, var(--gold), #F59E0B);
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            font-size: 1.3rem;
-            border-radius: 30px;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
-            transition: transform 0.2s;
-            font-family: 'Noto Nastaliq Urdu', serif;
-            width: 100%;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
+        .btn-share {
+            background: #25D366; color: white; border: none; padding: 15px 30px;
+            font-size: 1.3rem; border-radius: 30px; cursor: pointer;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4); font-family: 'Noto Nastaliq Urdu', serif;
+            width: 100%; max-width: 500px; display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 20px;
         }
 
-        .btn:hover { transform: scale(1.05); }
-        .btn-share { background: #25D366; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4); }
-
-        /* Hadith & Dua Board */
-        .hadith-box, .dua-board {
-            background: var(--glass);
-            padding: 25px;
-            border-radius: 20px;
-            margin-top: 20px;
-            font-size: 1.2rem;
-            line-height: 2;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        /* Floating Animation */
+        .floating-icon {
+            position: fixed; font-size: 2.5rem; pointer-events: none;
+            animation: floatUp 3s ease-out forwards; z-index: 100;
         }
-
-        .dua-input {
-            width: 90%;
-            padding: 10px;
-            border-radius: 10px;
-            border: 1px solid #ccc;
-            font-family: 'Noto Nastaliq Urdu', serif;
-            font-size: 1.1rem;
-            margin-bottom: 10px;
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) scale(0.5); opacity: 0; }
+            20% { opacity: 1; transform: translateY(80vh) scale(1.2); }
+            100% { transform: translateY(-100px) scale(1); opacity: 0; }
         }
-
-        #duaList {
-            list-style: none;
-            padding: 0;
-            text-align: right;
-            max-height: 150px;
-            overflow-y: auto;
-        }
-
-        #duaList li {
-            border-bottom: 1px solid #eee;
-            padding: 10px 0;
-            color: var(--text);
-        }
-
     </style>
 </head>
 <body>
 
-<audio id="coinSound" src="https://assets.mixkit.co/active_storage/sfx/2013/2013-preview.mp3"></audio>
+    <audio id="coinSound" src="https://assets.mixkit.co/active_storage/sfx/2013/2013-preview.mp3"></audio>
 
-<div class="container">
     <div class="top-bar">
         <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
         <div class="timer-box" id="countdownTimer">⏳ 00:00:00</div>
     </div>
 
-    <h1>فری سحری پوائنٹ</h1>
-    
-    <div class="alert-box" id="alertBox">
-        ⚠️ 25 گھروں کی سحری کا ہدف ابھی باقی ہے! آئیے حصہ ڈالیں۔
+    <h1 class="header-title">فری سحری پوائنٹ</h1>
+    <div class="subtitle">Daily Target: Rs. 8,000 (25 Homes)</div>
+
+    <div class="jar-wrapper">
+        <div class="glass-jar">
+            <div class="liquid" id="jarLiquid"></div>
+            <div class="amount-display" id="progressText">Rs. 0</div>
+        </div>
     </div>
 
-    <div class="jar-container" onclick="simulateDonation()">
-        <div class="liquid" id="jarLiquid">
-            </div>
-        <div class="progress-text" id="progressText">Rs. 2400</div>
-    </div>
-
-    <div class="calculator">
+    <div class="info-card">
         <h3 style="margin-top: 0; color: var(--primary);">آپ کتنے گھروں کی سحری کروانا چاہتے ہیں؟</h3>
         <input type="range" id="donationSlider" min="320" max="8000" step="320" value="320" oninput="updateImpact()">
-        <p id="impactText" style="font-size: 1.2rem; font-weight: bold;">Rs. 320 = 1 گھر کی سحری</p>
+        <p id="impactText" style="font-size: 1.2rem; font-weight: bold; font-family: sans-serif;">Rs. 320 = 1 گھر کی سحری</p>
         
-        <p style="font-size: 1rem; color: #6B7280; font-family: sans-serif;">
-            JazzCash / EasyPaisa: <strong>0305-7242598</strong> (Muhammad Asghar)
-        </p>
-        
-        <button class="btn" onclick="simulateDonation()">
-            <span style="font-size: 1.5rem;">🪙</span> عطیہ بھیج کر یہاں کلک کریں
-        </button>
+        <p style="font-size: 1.2rem; color: var(--text-dark); margin-top: 20px;">اس کارِ خیر میں حصہ ڈالیں (JazzCash / EasyPaisa)</p>
+        <div class="donate-number">0305-7242598</div>
+        <p style="font-size: 1.1rem; color: var(--text-dark); font-family: sans-serif;">Muhammad Asghar</p>
     </div>
 
-    <button class="btn btn-share" onclick="shareOnWhatsApp()">
-        <span style="font-size: 1.5rem;">📲</span> ثواب کے لیے شیئر کریں
+    <button class="btn-share" onclick="shareOnWhatsApp()">
+        <span style="font-size: 1.5rem; font-family: sans-serif;">📲</span> ثواب کے لیے شیئر کریں
     </button>
 
-    <div class="hadith-box">
+    <div class="info-card">
         <h3 style="color: var(--primary); margin-top: 0;">✨ آج کی حدیث</h3>
-        <p id="dailyHadith">"جس نے کسی روزہ دار کو روزہ افطار کرایا، اس کے لئے بھی روزہ دار کے برابر ثواب ہے۔"</p>
+        <p style="font-size: 1.2rem; line-height: 2;">"جس نے کسی روزہ دار کو روزہ افطار کرایا، اس کے لئے بھی روزہ دار کے برابر ثواب ہے۔"</p>
     </div>
 
-    <div class="dua-board">
-        <h3 style="color: var(--primary); margin-top: 0;">🤲 دعاؤں کی دیوار</h3>
-        <input type="text" id="duaInput" class="dua-input" placeholder="اپنی دعا یہاں لکھیں (نام ظاہر نہیں کیا جائے گا)...">
-        <button onclick="addDua()" style="background: var(--primary); color: white; border: none; padding: 10px 20px; border-radius: 10px; cursor: pointer; font-family: 'Noto Nastaliq Urdu';">دعا شامل کریں</button>
-        <ul id="duaList">
-            <li>یا اللہ ہمارے رزق میں برکت عطا فرما۔ آمین</li>
-        </ul>
-    </div>
-</div>
+    <script>
+        // --- 1. FIREBASE SETUP ---
+        const firebaseConfig = {
+            apiKey: "AIzaSyBX1khgSPRWUDmaL9nwDsDhSefLl18-u_g",
+            authDomain: "jannahpath-74910.firebaseapp.com",
+            databaseURL: "https://jannahpath-74910-default-rtdb.firebaseio.com",
+            projectId: "jannahpath-74910",
+            storageBucket: "jannahpath-74910.firebasestorage.app",
+            messagingSenderId: "217014790374",
+            appId: "1:217014790374:web:94ce4fd99bb86893a3f327"
+        };
 
-<script>
-    let currentFunds = 2400;
-    const dailyGoal = 8000;
-    const costPerFamily = 320; // 8000 / 25
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+        const dailyGoal = 8000;
+        let previousFunds = -1; // -1 to prevent animation on first load
 
-    // --- 1. Impact Calculator ---
-    function updateImpact() {
-        const amount = document.getElementById('donationSlider').value;
-        const families = Math.floor(amount / costPerFamily);
-        document.getElementById('impactText').innerText = `Rs. ${amount} = ${families} گھروں کی سحری`;
-    }
+        // --- 2. LIVE JAR LISTENER ---
+        db.ref('sehri_campaign/funds').on('value', (snapshot) => {
+            const currentFunds = snapshot.val() || 0;
+            
+            // Calculate percentage
+            let percentage = (currentFunds / dailyGoal) * 100;
+            if (percentage > 100) percentage = 100;
 
-    // --- 2. Simulate Donation & Animations ---
-    function simulateDonation() {
-        // Play Sound
-        document.getElementById('coinSound').play();
+            // Update Jar UI
+            document.getElementById('jarLiquid').style.height = percentage + '%';
+            document.getElementById('progressText').innerText = `Rs. ${currentFunds}`;
 
-        // Get value from slider
-        const amountToAdd = parseInt(document.getElementById('donationSlider').value);
-        currentFunds += amountToAdd;
-        
-        if(currentFunds > dailyGoal) currentFunds = dailyGoal;
+            // Trigger animations ONLY if funds increased (not on first page load)
+            if (previousFunds !== -1 && currentFunds > previousFunds) {
+                showFloatingIcons();
+                document.getElementById('coinSound').play().catch(e => console.log("Audio blocked by browser"));
+            }
 
-        // Update Jar
-        const percentage = (currentFunds / dailyGoal) * 100;
-        document.getElementById('jarLiquid').style.height = percentage + '%';
-        document.getElementById('progressText').innerText = `Rs. ${currentFunds}`;
+            // Confetti if goal is reached
+            if (percentage >= 100 && previousFunds !== -1 && previousFunds < dailyGoal) {
+                confetti({ particleCount: 200, spread: 90, origin: { y: 0.5 } });
+            }
 
-        // Create Floating Bubbles
-        createBubbles();
+            previousFunds = currentFunds;
+        });
 
-        // Check Goal & Alerts
-        if (percentage >= 100) {
-            document.getElementById('alertBox').style.display = 'none';
-            document.getElementById('progressText').innerText = "الحمدللہ مکمل";
-            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
-        } else if (percentage > 50) {
-            document.getElementById('alertBox').innerHTML = "💚 الحمدللہ! آدھے سے زیادہ ہدف مکمل ہو چکا ہے۔";
-            document.getElementById('alertBox').style.background = "#D1FAE5";
-            document.getElementById('alertBox').style.color = "#065F46";
+        function showFloatingIcons() {
+            const icons = ['💚', '✨', '🪙', '🤲'];
+            for(let i=0; i<8; i++) {
+                setTimeout(() => {
+                    let el = document.createElement('div');
+                    el.className = 'floating-icon';
+                    el.innerText = icons[Math.floor(Math.random() * icons.length)];
+                    el.style.left = Math.random() * 80 + 10 + 'vw';
+                    document.body.appendChild(el);
+                    setTimeout(() => el.remove(), 3000);
+                }, i * 200);
+            }
         }
-    }
 
-    function createBubbles() {
-        const liquid = document.getElementById('jarLiquid');
-        for(let i=0; i<5; i++) {
-            let bubble = document.createElement('div');
-            bubble.className = 'bubble';
-            bubble.style.left = Math.random() * 80 + '%';
-            bubble.style.width = Math.random() * 20 + 10 + 'px';
-            bubble.style.height = bubble.style.width;
-            bubble.style.animationDuration = Math.random() * 2 + 2 + 's';
-            liquid.appendChild(bubble);
-            setTimeout(() => bubble.remove(), 3000);
+        // --- 3. UI FUNCTIONS ---
+        function updateImpact() {
+            const amount = document.getElementById('donationSlider').value;
+            const families = Math.floor(amount / 320);
+            document.getElementById('impactText').innerText = `Rs. ${amount} = ${families} گھروں کی سحری`;
         }
-    }
 
-    // --- 3. Dark Mode Toggle ---
-    function toggleTheme() {
-        document.body.classList.toggle('dark-mode');
-        const btn = document.querySelector('.theme-toggle');
-        btn.innerText = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
-    }
-
-    // --- 4. WhatsApp Share ---
-    function shareOnWhatsApp() {
-        const text = encodeURIComponent("السلام علیکم! 🌙\nفیصل آباد میں 25 گھروں کی مفت سحری کے اس کارِ خیر میں حصہ ڈالیں۔\nآپ کے محض 320 روپے ایک گھر کی سحری کا بندوبست کر سکتے ہیں۔\nJazzCash/EasyPaisa: 0305-7242598 (M. Asghar)\n\nمزید تفصیلات اور ہدف دیکھنے کے لیے کلک کریں:\nhttps://yourwebsite.com");
-        window.open(`https://wa.me/?text=${text}`, '_blank');
-    }
-
-    // --- 5. Countdown Timer (Simulated for Sehri - e.g., 4:30 AM) ---
-    function updateTimer() {
-        const now = new Date();
-        const sehriTime = new Date();
-        sehriTime.setHours(4, 30, 0, 0);
-        
-        if (now > sehriTime) sehriTime.setDate(sehriTime.getDate() + 1); // Next day if passed
-        
-        const diff = sehriTime - now;
-        const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-        const s = Math.floor((diff % (1000 * 60)) / 1000);
-        
-        document.getElementById('countdownTimer').innerText = `سحری میں باقی: ${h}:${m < 10 ? '0'+m : m}:${s < 10 ? '0'+s : s}`;
-    }
-    setInterval(updateTimer, 1000);
-
-    // --- 6. Dua Board ---
-    function addDua() {
-        const input = document.getElementById('duaInput');
-        if (input.value.trim() !== "") {
-            const ul = document.getElementById('duaList');
-            const li = document.createElement('li');
-            li.innerText = input.value;
-            ul.insertBefore(li, ul.firstChild);
-            input.value = "";
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            const btn = document.querySelector('.theme-toggle');
+            btn.innerText = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
         }
-    }
 
-    // Initialize
-    window.onload = () => {
-        updateImpact();
-        updateTimer();
-    };
-</script>
+        function shareOnWhatsApp() {
+            const text = encodeURIComponent("السلام علیکم! 🌙\nفیصل آباد میں 25 گھروں کی مفت سحری کے اس کارِ خیر میں حصہ ڈالیں۔\nآپ کے محض 320 روپے ایک گھر کی سحری کا بندوبست کر سکتے ہیں۔\nJazzCash/EasyPaisa: 0305-7242598 (M. Asghar)\n\nہماری ویب سائٹ پر لائیو ڈونیشن جار دیکھیں:\nhttps://your-github-link-here.com");
+            window.open(`https://wa.me/?text=${text}`, '_blank');
+        }
+
+        function updateTimer() {
+            const now = new Date();
+            const sehriTime = new Date();
+            sehriTime.setHours(4, 30, 0, 0); // Assuming 4:30 AM Sehri end time
+            if (now > sehriTime) sehriTime.setDate(sehriTime.getDate() + 1);
+            
+            const diff = sehriTime - now;
+            const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((diff % (1000 * 60)) / 1000);
+            
+            document.getElementById('countdownTimer').innerText = `سحری میں باقی: ${h}:${m < 10 ? '0'+m : m}:${s < 10 ? '0'+s : s}`;
+        }
+        setInterval(updateTimer, 1000);
+        
+        // Init
+        window.onload = () => { updateImpact(); updateTimer(); };
+    </script>
 </body>
 </html>
