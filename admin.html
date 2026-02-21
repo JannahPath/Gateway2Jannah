@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Sehri Point</title>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+    <style>
+        body { font-family: sans-serif; background: #1F2937; color: white; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .admin-panel { background: #374151; padding: 40px; border-radius: 20px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.5); width: 300px; }
+        input { width: 85%; padding: 15px; margin: 20px 0; border-radius: 10px; border: none; font-size: 1.2rem; text-align: center; }
+        button { background: #10B981; color: white; border: none; padding: 15px 30px; font-size: 1.2rem; border-radius: 10px; cursor: pointer; width: 100%; font-weight: bold; margin-bottom: 10px; transition: 0.2s; }
+        button:active { transform: scale(0.95); }
+        .reset-btn { background: #EF4444; }
+        #status { margin-top: 15px; color: #34D399; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div class="admin-panel">
+        <h2>Sehri Admin Panel</h2>
+        <h3 style="color: #9CA3AF;">Live Jar Total: Rs. <span id="currentTotal" style="color: white; font-size: 1.5rem;">0</span></h3>
+        
+        <input type="number" id="newAmount" placeholder="Amount Recv (e.g. 500)">
+        <button onclick="addFunds()">+ Send to Live Jar</button>
+        <button class="reset-btn" onclick="resetJar()">Reset Jar (New Day)</button>
+        
+        <div id="status"></div>
+    </div>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyBX1khgSPRWUDmaL9nwDsDhSefLl18-u_g",
+            authDomain: "jannahpath-74910.firebaseapp.com",
+            databaseURL: "https://jannahpath-74910-default-rtdb.firebaseio.com",
+            projectId: "jannahpath-74910",
+            storageBucket: "jannahpath-74910.firebasestorage.app",
+            messagingSenderId: "217014790374",
+            appId: "1:217014790374:web:94ce4fd99bb86893a3f327"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+        let currentDbFunds = 0;
+
+        // Fetch current total
+        db.ref('sehri_campaign/funds').on('value', (snapshot) => {
+            currentDbFunds = snapshot.val() || 0;
+            document.getElementById('currentTotal').innerText = currentDbFunds;
+        });
+
+        function addFunds() {
+            const amountInput = parseInt(document.getElementById('newAmount').value);
+            if (!amountInput || amountInput <= 0) return;
+
+            const newTotal = currentDbFunds + amountInput;
+            
+            db.ref('sehri_campaign/funds').set(newTotal).then(() => {
+                document.getElementById('status').innerText = "✅ Sent to Live Website!";
+                document.getElementById('newAmount').value = '';
+                setTimeout(() => document.getElementById('status').innerText = '', 3000);
+            });
+        }
+
+        function resetJar() {
+            if(confirm("Are you sure? This will empty the jar to Rs. 0 for the public.")) {
+                db.ref('sehri_campaign/funds').set(0).then(() => {
+                    document.getElementById('status').innerText = "🔄 Jar Reset to Zero!";
+                    setTimeout(() => document.getElementById('status').innerText = '', 3000);
+                });
+            }
+        }
+    </script>
+</body>
+</html>
