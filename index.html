@@ -3,173 +3,277 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Free Sehri Point - Faisalabad</title>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet">
+    <title>Free Sehri Point - Gateway 2 Jannah</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;700&family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 
     <style>
         :root {
-            --primary: #065F46;
-            --secondary: #10B981;
-            --gold: #F59E0B;
-            --bg-gradient: linear-gradient(135deg, #e0f2f1 0%, #fdfbfb 100%);
-            --glass-bg: rgba(255, 255, 255, 0.4);
-            --glass-border: rgba(255, 255, 255, 0.8);
-            --text-dark: #1F2937;
-        }
-
-        body.dark-mode {
-            --primary: #34D399;
-            --bg-gradient: linear-gradient(135deg, #111827 0%, #1F2937 100%);
-            --glass-bg: rgba(31, 41, 55, 0.6);
-            --glass-border: rgba(255, 255, 255, 0.1);
-            --text-dark: #F9FAFB;
+            --primary: #34D399; 
+            --secondary: #059669; 
+            --gold: #FBBF24; 
+            --text-light: #F9FAFB;
+            --glass-bg: rgba(17, 24, 39, 0.65);
+            --glass-border: rgba(255, 255, 255, 0.15);
         }
 
         body {
             font-family: 'Noto Nastaliq Urdu', serif;
-            background: var(--bg-gradient);
-            color: var(--text-dark);
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            overflow-x: hidden;
-            transition: all 0.5s ease;
+            background: linear-gradient(to bottom, rgba(17, 24, 39, 0.85), rgba(6, 78, 59, 0.95)), 
+                        url('https://images.unsplash.com/photo-1590076215667-872ab694c153?q=80&w=2070&auto=format&fit=crop') center/cover fixed;
+            color: var(--text-light);
+            margin: 0; padding: 0; min-height: 100vh; overflow-x: hidden;
         }
+
+        .english-num { font-family: 'Poppins', sans-serif; }
+
+        /* Lanterns */
+        .lantern {
+            position: absolute; top: -10px; width: 60px;
+            filter: drop-shadow(0 0 15px rgba(251, 191, 36, 0.6));
+            animation: swing 4s infinite ease-in-out alternate;
+            transform-origin: top center; z-index: 0;
+        }
+        .lantern.left { left: 5%; animation-delay: 0.5s; }
+        .lantern.right { right: 5%; width: 45px; animation-duration: 3s; }
+        @keyframes swing { 0% { transform: rotate(8deg); } 100% { transform: rotate(-8deg); } }
 
         /* Top Bar */
         .top-bar {
-            display: flex; justify-content: space-between; align-items: center;
-            width: 100%; max-width: 600px; margin-bottom: 20px;
-            font-family: sans-serif;
+            display: flex; justify-content: center; align-items: center;
+            padding: 15px 5%; width: 100%; box-sizing: border-box;
+            background: rgba(0,0,0,0.4); backdrop-filter: blur(10px); 
+            border-bottom: 1px solid var(--glass-border); position: sticky; top: 0; z-index: 100;
         }
         .timer-box {
-            background: rgba(255, 255, 255, 0.8); padding: 10px 20px;
-            border-radius: 20px; font-weight: bold; color: #065F46;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            background: rgba(251, 191, 36, 0.15); padding: 8px 25px;
+            border-radius: 30px; font-weight: 600; color: var(--gold);
+            border: 1px solid rgba(251, 191, 36, 0.3); display: flex; align-items: center; gap: 8px; font-size: 1.1rem;
+            box-shadow: 0 0 20px rgba(251, 191, 36, 0.1);
         }
-        body.dark-mode .timer-box { background: rgba(0,0,0,0.5); color: #34D399; }
+
+        .container {
+            max-width: 1200px; margin: 0 auto; padding: 40px 20px 80px 20px;
+            display: flex; flex-direction: column; gap: 40px; position: relative; z-index: 10;
+        }
+
+        .header-section { text-align: center; margin-bottom: 10px; }
+        .header-title { font-size: 3.8rem; color: var(--primary); margin: 0; text-shadow: 0 0 25px rgba(52, 211, 153, 0.5); }
+        .emotional-text { font-size: 1.8rem; color: var(--gold); margin: 10px 0; font-weight: bold; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
+        .subtitle { color: #D1D5DB; font-size: 1.2rem; margin-top: 10px; font-family: 'Poppins'; letter-spacing: 2px; }
+
+        .content-wrapper { display: flex; flex-direction: column; gap: 60px; align-items: center; margin-top: 20px;}
+        @media (min-width: 900px) {
+            .content-wrapper { flex-direction: row; justify-content: space-between; align-items: stretch; gap: 60px; }
+            .jar-section, .details-section { flex: 1; width: 50%; }
+        }
+
+        /* =========================================
+           THE MEGA VIP 3D JAR (AKHER LEVEL)
+           ========================================= */
+        .jar-section { display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; }
         
-        .theme-toggle { background: none; border: none; font-size: 1.5rem; cursor: pointer; }
+        /* Glowing Aura behind Jar */
+        .jar-aura {
+            position: absolute; width: 300px; height: 400px;
+            background: radial-gradient(circle, rgba(52, 211, 153, 0.2) 0%, rgba(0,0,0,0) 70%);
+            top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 0; pointer-events: none;
+        }
 
-        .header-title { font-size: 3rem; color: var(--primary); margin-bottom: 5px; text-align: center; }
-        .subtitle { font-family: sans-serif; color: #4B5563; font-weight: bold; margin-bottom: 30px; font-size: 1.2rem; }
-        body.dark-mode .subtitle { color: #9CA3AF; }
+        .jar-wrapper { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center;}
 
-        /* Animated Jar */
-        .jar-wrapper { position: relative; margin-bottom: 40px; }
+        /* Gold Lid / Rim */
+        .jar-lid {
+            width: 180px; height: 35px; background: linear-gradient(to bottom, #FCE68E, #D4AF37, #B8860B);
+            border-radius: 10px 10px 5px 5px; margin-bottom: -5px; z-index: 10; position: relative;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5), inset 0 2px 5px rgba(255,255,255,0.8);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        /* The Main Huge Glass Body */
         .glass-jar {
-            width: 220px; height: 320px;
-            background: var(--glass-bg); border: 4px solid var(--glass-border);
-            border-radius: 20px 20px 50px 50px; position: relative; overflow: hidden;
-            box-shadow: inset 0 0 20px rgba(255,255,255,0.2), 0 15px 35px rgba(0,0,0,0.1);
-            backdrop-filter: blur(15px); z-index: 2;
+            width: 320px; height: 450px; /* BARA SIZE */
+            background: rgba(255, 255, 255, 0.03); 
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: none; border-radius: 10px 10px 90px 90px;
+            position: relative; overflow: hidden;
+            box-shadow: 
+                inset -20px -20px 50px rgba(0,0,0,0.6), 
+                inset 20px 20px 50px rgba(255,255,255,0.1),
+                0 30px 60px rgba(0,0,0,0.6);
+            backdrop-filter: blur(10px);
         }
-        .glass-jar::before {
-            content: ''; position: absolute; top: -15px; left: 50%; transform: translateX(-50%);
-            width: 120px; height: 30px; background: var(--glass-border); border-radius: 15px;
+
+        /* 3D Glass Shine */
+        .glass-jar::after {
+            content: ''; position: absolute; top: 0; left: 10%; width: 15%; height: 100%;
+            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0) 100%);
+            transform: skewX(-15deg); pointer-events: none; z-index: 5;
         }
+
+        /* The Animated Liquid */
         .liquid {
             position: absolute; bottom: 0; left: 0; width: 100%; height: 0%;
-            background: linear-gradient(0deg, var(--secondary) 0%, #34D399 100%);
-            border-radius: 0 0 45px 45px; transition: height 2s cubic-bezier(0.4, 0, 0.2, 1);
+            background: linear-gradient(180deg, #10B981 0%, #064E3B 100%);
+            border-radius: 0 0 85px 85px; transition: height 2s cubic-bezier(0.2, 0.8, 0.2, 1);
+            box-shadow: 0 -15px 40px rgba(16, 185, 129, 0.6); overflow: hidden;
         }
-        .liquid::after {
-            content: ''; position: absolute; top: -10px; left: -50%; width: 200%; height: 20px;
-            background: rgba(255, 255, 255, 0.3); border-radius: 50%; animation: wave 3s infinite linear;
+        
+        /* Waves on Top of Liquid */
+        .liquid::before, .liquid::after {
+            content: ''; position: absolute; top: -15px; left: -50%; width: 200%; height: 35px;
+            background: rgba(255, 255, 255, 0.2); border-radius: 50%; animation: wave 4s infinite linear;
         }
-        @keyframes wave {
-            0% { transform: translateX(0) scaleY(1); }
-            50% { transform: translateX(-25%) scaleY(1.5); }
-            100% { transform: translateX(-50%) scaleY(1); }
+        .liquid::after { top: -20px; background: rgba(52, 211, 153, 0.3); animation: wave 6s infinite linear reverse; }
+        @keyframes wave { 0% { transform: translateX(0) scaleY(1); } 50% { transform: translateX(-25%) scaleY(1.3); } 100% { transform: translateX(-50%) scaleY(1); } }
+
+        /* Bubbles inside liquid */
+        .bubble {
+            position: absolute; bottom: -20px; background: rgba(255, 255, 255, 0.4); border-radius: 50%;
+            animation: rise linear infinite;
         }
+        @keyframes rise { 0% { transform: translateY(0) scale(1); opacity: 1; } 100% { transform: translateY(-400px) scale(0.5); opacity: 0; } }
+
+        /* The Giant Text inside Jar */
         .amount-display {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            font-size: 2.2rem; font-weight: bold; color: white;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.3); font-family: sans-serif; z-index: 10;
+            font-size: 3.5rem; font-weight: 900; color: white;
+            text-shadow: 0 5px 20px rgba(0,0,0,0.9), 0 0 10px rgba(52, 211, 153, 0.5); z-index: 10; width: 100%; text-align: center;
         }
 
-        /* Glass Cards */
+        /* Gold Pedestal Base */
+        .jar-base {
+            width: 250px; height: 30px; background: linear-gradient(to right, #6B7280, #1F2937, #6B7280);
+            border-radius: 50%; margin-top: -15px; z-index: 1;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.8), inset 0 5px 10px rgba(255,255,255,0.2);
+            border: 2px solid #4B5563;
+        }
+        /* ========================================= */
+
+        /* Cards and Details */
+        .details-section { display: flex; flex-direction: column; gap: 25px; width: 100%; max-width: 500px; }
         .info-card {
-            background: var(--glass-bg); backdrop-filter: blur(10px);
-            padding: 25px; border-radius: 20px; border: 1px solid var(--glass-border);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05); max-width: 500px; width: 100%;
-            text-align: center; margin-bottom: 20px;
+            background: var(--glass-bg); backdrop-filter: blur(16px);
+            padding: 35px; border-radius: 24px; border: 1px solid var(--glass-border);
+            box-shadow: 0 20px 40px var(--shadow-color); text-align: center;
         }
-        .donate-number {
-            font-size: 1.8rem; color: var(--primary); font-family: sans-serif; font-weight: bold;
-            letter-spacing: 2px; margin: 10px 0; background: rgba(16, 185, 129, 0.2);
-            padding: 10px; border-radius: 10px;
+        .card-heading { color: var(--primary); margin: 0 0 15px 0; font-size: 2rem; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+        
+        input[type=range] { 
+            width: 100%; margin: 30px 0; accent-color: var(--primary); height: 10px;
+            background: rgba(255,255,255,0.2); border-radius: 10px; outline: none; -webkit-appearance: none;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none; width: 30px; height: 30px; border-radius: 50%;
+            background: var(--gold); cursor: pointer; box-shadow: 0 0 20px rgba(251, 191, 36, 1); border: 3px solid white;
         }
 
-        /* Impact Slider */
-        input[type=range] { width: 100%; margin: 15px 0; accent-color: var(--secondary); }
+        .impact-text { font-size: 1.6rem; color: var(--text-light); background: rgba(52, 211, 153, 0.15); padding: 15px; border-radius: 12px; margin-bottom: 25px; border: 1px solid rgba(52, 211, 153, 0.3);}
+        .impact-text span.english-num { color: var(--gold); font-weight: bold; font-size: 1.8rem;}
 
-        /* Buttons */
+        .account-box {
+            background: rgba(0,0,0,0.5); border: 2px dashed var(--gold);
+            border-radius: 16px; padding: 25px; position: relative; overflow: hidden;
+        }
+        .donate-number { font-size: 2.8rem; color: var(--primary); font-weight: 900; letter-spacing: 3px; margin: 15px 0; text-shadow: 0 2px 5px rgba(0,0,0,0.8); }
+        .provider-tags { display: flex; justify-content: center; gap: 10px; margin-bottom: 5px; }
+        .tag { font-family: 'Poppins'; font-size: 1rem; padding: 6px 16px; border-radius: 20px; color: white; font-weight: bold; text-transform: uppercase;}
+        .tag.jazz { background: #E11422; box-shadow: 0 0 15px rgba(225, 20, 34, 0.5); } 
+        .tag.easy { background: #40B14A; box-shadow: 0 0 15px rgba(64, 177, 74, 0.5); }
+
         .btn-share {
-            background: #25D366; color: white; border: none; padding: 15px 30px;
-            font-size: 1.3rem; border-radius: 30px; cursor: pointer;
-            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4); font-family: 'Noto Nastaliq Urdu', serif;
-            width: 100%; max-width: 500px; display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 20px;
+            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%); color: white;
+            border: 1px solid rgba(255,255,255,0.2); padding: 20px 30px; font-size: 1.6rem; border-radius: 50px; cursor: pointer;
+            box-shadow: 0 10px 30px rgba(37, 211, 102, 0.4); font-family: 'Noto Nastaliq Urdu', serif;
+            display: flex; align-items: center; justify-content: center; gap: 15px; width: 100%; transition: all 0.3s;
         }
+        .btn-share:hover { transform: scale(1.03); box-shadow: 0 15px 40px rgba(37, 211, 102, 0.7); }
 
-        /* Floating Animation */
-        .floating-icon {
-            position: fixed; font-size: 2.5rem; pointer-events: none;
-            animation: floatUp 3s ease-out forwards; z-index: 100;
-        }
-        @keyframes floatUp {
-            0% { transform: translateY(100vh) scale(0.5); opacity: 0; }
-            20% { opacity: 1; transform: translateY(80vh) scale(1.2); }
-            100% { transform: translateY(-100px) scale(1); opacity: 0; }
+        .hadith-card { border-top: 5px solid var(--gold); }
+        .dua-ticker-container {
+            position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(0,0,0,0.85); border-top: 2px solid var(--gold);
+            color: var(--gold); padding: 12px 0; z-index: 100; font-size: 1.4rem; backdrop-filter: blur(10px);
         }
     </style>
 </head>
 <body>
 
     <audio id="coinSound" src="https://assets.mixkit.co/active_storage/sfx/2013/2013-preview.mp3"></audio>
+    <img src="https://cdn-icons-png.flaticon.com/512/8202/8202688.png" alt="Lantern" class="lantern left">
+    <img src="https://cdn-icons-png.flaticon.com/512/8202/8202688.png" alt="Lantern" class="lantern right">
 
     <div class="top-bar">
-        <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
-        <div class="timer-box" id="countdownTimer">⏳ 00:00:00</div>
-    </div>
-
-    <h1 class="header-title">فری سحری پوائنٹ</h1>
-    <div class="subtitle">Daily Target: Rs. 8,000 (25 Homes)</div>
-
-    <div class="jar-wrapper">
-        <div class="glass-jar">
-            <div class="liquid" id="jarLiquid"></div>
-            <div class="amount-display" id="progressText">Rs. 0</div>
+        <div class="timer-box" id="countdownTimer">
+            <span style="font-size:1.3rem;">⏳</span> <span>فیصل آباد سحری میں باقی: </span>
+            <span class="english-num" id="timeDigits">00:00:00</span>
         </div>
     </div>
 
-    <div class="info-card">
-        <h3 style="margin-top: 0; color: var(--primary);">آپ کتنے گھروں کی سحری کروانا چاہتے ہیں؟</h3>
-        <input type="range" id="donationSlider" min="320" max="8000" step="320" value="320" oninput="updateImpact()">
-        <p id="impactText" style="font-size: 1.2rem; font-weight: bold; font-family: sans-serif;">Rs. 320 = 1 گھر کی سحری</p>
-        
-        <p style="font-size: 1.2rem; color: var(--text-dark); margin-top: 20px;">اس کارِ خیر میں حصہ ڈالیں (JazzCash / EasyPaisa)</p>
-        <div class="donate-number">0305-7242598</div>
-        <p style="font-size: 1.1rem; color: var(--text-dark); font-family: sans-serif;">Muhammad Asghar</p>
+    <div class="container">
+        <div class="header-section">
+            <h1 class="header-title">فری سحری پوائنٹ</h1>
+            <p class="emotional-text">کسی کے دسترخوان کی رونق بنیں</p>
+            <p class="subtitle english-num">TARGET: 25 HOMES | DAILY GOAL: Rs. 8,000</p>
+        </div>
+
+        <div class="content-wrapper">
+            <div class="jar-section">
+                <div class="jar-aura"></div>
+                <div class="jar-wrapper">
+                    <div class="jar-lid"></div>
+                    <div class="glass-jar">
+                        <div class="liquid" id="jarLiquid"></div>
+                        <div class="amount-display english-num" id="progressText">Rs. 0</div>
+                    </div>
+                    <div class="jar-base"></div>
+                </div>
+                <p style="color: var(--gold); font-size: 1.6rem; font-weight: bold; margin-top: 30px; text-shadow: 0 2px 5px rgba(0,0,0,0.9);" id="statusMessage">
+                    آج کی سحری کا فنڈ اکٹھا ہو رہا ہے...
+                </p>
+            </div>
+
+            <div class="details-section">
+                <div class="info-card">
+                    <h3 class="card-heading">آپ کتنے گھروں کی سحری کروانا چاہتے ہیں؟</h3>
+                    <p style="font-size: 1.3rem; color: #D1D5DB; margin:0;">آپ کا ایک چھوٹا سا عمل کسی کی سحری کا سبب بن سکتا ہے۔</p>
+                    
+                    <input type="range" id="donationSlider" min="320" max="8000" step="320" value="320" oninput="updateImpact()">
+                    <div class="impact-text">
+                        <span class="english-num" id="impactAmount">Rs. 320</span> = <span id="impactFamilies" class="english-num">1</span> گھر کی سحری
+                    </div>
+                    
+                    <div class="account-box">
+                        <div class="provider-tags">
+                            <span class="tag jazz">JAZZCASH</span>
+                            <span class="tag easy">EASYPAISA</span>
+                        </div>
+                        <div class="donate-number english-num">0305-7242598</div>
+                        <p style="font-size: 1.4rem; font-family: 'Poppins'; margin:0; font-weight:600; color:#F9FAFB; letter-spacing: 1px;">MUHAMMAD ASGHAR</p>
+                    </div>
+                </div>
+
+                <button class="btn-share" onclick="shareOnWhatsApp()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.347-.272.297-1.04 1.016-1.04 2.479 0 1.463 1.065 2.876 1.213 3.074.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+                    ثواب کے لیے شیئر کریں
+                </button>
+
+                <div class="info-card hadith-card">
+                    <h3 class="card-heading">✨ آج کی حدیث</h3>
+                    <p style="font-size: 1.4rem; line-height: 2.2; margin-bottom: 0; color: #F9FAFB;">"جس نے کسی روزہ دار کو روزہ افطار کرایا، اس کے لئے بھی روزہ دار کے برابر ثواب ہے۔"</p>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <button class="btn-share" onclick="shareOnWhatsApp()">
-        <span style="font-size: 1.5rem; font-family: sans-serif;">📲</span> ثواب کے لیے شیئر کریں
-    </button>
-
-    <div class="info-card">
-        <h3 style="color: var(--primary); margin-top: 0;">✨ آج کی حدیث</h3>
-        <p style="font-size: 1.2rem; line-height: 2;">"جس نے کسی روزہ دار کو روزہ افطار کرایا، اس کے لئے بھی روزہ دار کے برابر ثواب ہے۔"</p>
+    <div class="dua-ticker-container">
+        <marquee behavior="scroll" direction="right" scrollamount="6">
+            Gateway 2 Jannah کے تحت فیصل آباد میں فری سحری پوائنٹ 🌙 | اے اللہ! ہمارے رزق میں برکت عطا فرما اور ہمیں دوسروں کے کام آنے کی توفیق دے۔ آمین 🤲 | آپ کے عطیات 25 گھروں کی سحری کا سبب بن رہے ہیں۔
+        </marquee>
     </div>
 
     <script>
-        // --- 1. FIREBASE SETUP ---
         const firebaseConfig = {
             apiKey: "AIzaSyBX1khgSPRWUDmaL9nwDsDhSefLl18-u_g",
             authDomain: "jannahpath-74910.firebaseapp.com",
@@ -183,70 +287,75 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
         const dailyGoal = 8000;
-        let previousFunds = -1; // -1 to prevent animation on first load
+        let previousFunds = -1; 
 
-        // --- 2. LIVE JAR LISTENER ---
+        // Generate Bubbles inside liquid
+        function createBubbles() {
+            const liquid = document.getElementById('jarLiquid');
+            setInterval(() => {
+                let bubble = document.createElement('div');
+                bubble.className = 'bubble';
+                let size = Math.random() * 15 + 5;
+                bubble.style.width = size + 'px';
+                bubble.style.height = size + 'px';
+                bubble.style.left = Math.random() * 90 + '%';
+                bubble.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                liquid.appendChild(bubble);
+                setTimeout(() => bubble.remove(), 4000);
+            }, 300);
+        }
+        createBubbles();
+
         db.ref('sehri_campaign/funds').on('value', (snapshot) => {
             const currentFunds = snapshot.val() || 0;
             
-            // Calculate percentage
             let percentage = (currentFunds / dailyGoal) * 100;
             if (percentage > 100) percentage = 100;
 
-            // Update Jar UI
             document.getElementById('jarLiquid').style.height = percentage + '%';
-            document.getElementById('progressText').innerText = `Rs. ${currentFunds}`;
+            document.getElementById('progressText').innerText = `Rs. ${currentFunds.toLocaleString()}`;
 
-            // Trigger animations ONLY if funds increased (not on first page load)
+            const statusEl = document.getElementById('statusMessage');
+            if(percentage >= 100) {
+                statusEl.innerText = "الحمدللہ! آج کا ہدف مکمل ہو گیا۔ جزاک اللہ خیر 💚";
+                statusEl.style.color = "var(--primary)";
+            } else {
+                statusEl.innerText = "آج کی سحری کا فنڈ اکٹھا ہو رہا ہے...";
+                statusEl.style.color = "var(--gold)";
+            }
+
             if (previousFunds !== -1 && currentFunds > previousFunds) {
-                showFloatingIcons();
-                document.getElementById('coinSound').play().catch(e => console.log("Audio blocked by browser"));
+                document.getElementById('coinSound').play().catch(e => console.log("Audio blocked"));
             }
 
-            // Confetti if goal is reached
             if (percentage >= 100 && previousFunds !== -1 && previousFunds < dailyGoal) {
-                confetti({ particleCount: 200, spread: 90, origin: { y: 0.5 } });
+                const duration = 3 * 1000;
+                const end = Date.now() + duration;
+                (function frame() {
+                    confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#FBBF24', '#34D399'] });
+                    confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#FBBF24', '#34D399'] });
+                    if (Date.now() < end) { requestAnimationFrame(frame); }
+                }());
             }
-
             previousFunds = currentFunds;
         });
 
-        function showFloatingIcons() {
-            const icons = ['💚', '✨', '🪙', '🤲'];
-            for(let i=0; i<8; i++) {
-                setTimeout(() => {
-                    let el = document.createElement('div');
-                    el.className = 'floating-icon';
-                    el.innerText = icons[Math.floor(Math.random() * icons.length)];
-                    el.style.left = Math.random() * 80 + 10 + 'vw';
-                    document.body.appendChild(el);
-                    setTimeout(() => el.remove(), 3000);
-                }, i * 200);
-            }
-        }
-
-        // --- 3. UI FUNCTIONS ---
         function updateImpact() {
             const amount = document.getElementById('donationSlider').value;
             const families = Math.floor(amount / 320);
-            document.getElementById('impactText').innerText = `Rs. ${amount} = ${families} گھروں کی سحری`;
-        }
-
-        function toggleTheme() {
-            document.body.classList.toggle('dark-mode');
-            const btn = document.querySelector('.theme-toggle');
-            btn.innerText = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
+            document.getElementById('impactAmount').innerText = `Rs. ${parseInt(amount).toLocaleString()}`;
+            document.getElementById('impactFamilies').innerText = families;
         }
 
         function shareOnWhatsApp() {
-            const text = encodeURIComponent("السلام علیکم! 🌙\nفیصل آباد میں 25 گھروں کی مفت سحری کے اس کارِ خیر میں حصہ ڈالیں۔\nآپ کے محض 320 روپے ایک گھر کی سحری کا بندوبست کر سکتے ہیں۔\nJazzCash/EasyPaisa: 0305-7242598 (M. Asghar)\n\nہماری ویب سائٹ پر لائیو ڈونیشن جار دیکھیں:\nhttps://your-github-link-here.com");
+            const text = encodeURIComponent("السلام علیکم! 🌙\nGateway 2 Jannah کے تحت فیصل آباد میں 25 گھروں کی مفت سحری کے اس کارِ خیر میں حصہ ڈالیں۔\nآپ کے محض 320 روپے ایک گھر کی سحری کا بندوبست کر سکتے ہیں۔\nJazzCash/EasyPaisa: 0305-7242598 (M. Asghar)\n\nہماری ویب سائٹ پر لائیو ڈونیشن جار دیکھیں:\nhttps://jannahpath.github.io/Gateway2Jannah/");
             window.open(`https://wa.me/?text=${text}`, '_blank');
         }
 
         function updateTimer() {
             const now = new Date();
             const sehriTime = new Date();
-            sehriTime.setHours(4, 30, 0, 0); // Assuming 4:30 AM Sehri end time
+            sehriTime.setHours(4, 45, 0, 0); 
             if (now > sehriTime) sehriTime.setDate(sehriTime.getDate() + 1);
             
             const diff = sehriTime - now;
@@ -254,11 +363,11 @@
             const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
             const s = Math.floor((diff % (1000 * 60)) / 1000);
             
-            document.getElementById('countdownTimer').innerText = `سحری میں باقی: ${h}:${m < 10 ? '0'+m : m}:${s < 10 ? '0'+s : s}`;
+            document.getElementById('timeDigits').innerText = 
+                `${h < 10 ? '0'+h : h}:${m < 10 ? '0'+m : m}:${s < 10 ? '0'+s : s}`;
         }
         setInterval(updateTimer, 1000);
         
-        // Init
         window.onload = () => { updateImpact(); updateTimer(); };
     </script>
 </body>
