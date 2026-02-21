@@ -21,7 +21,6 @@
 
         body {
             font-family: 'Noto Nastaliq Urdu', serif;
-            /* Yahan background image pic.jpg update kar di gayi hai */
             background: linear-gradient(to bottom, rgba(17, 24, 39, 0.85), rgba(6, 78, 59, 0.95)), 
                         url('pic.jpg') center/cover fixed;
             color: var(--text-light);
@@ -42,14 +41,12 @@
         .lantern.right { right: 5%; width: 45px; animation-duration: 3s; }
         @keyframes swing { 0% { transform: rotate(8deg); } 100% { transform: rotate(-8deg); } }
 
-        /* Main Container */
         .container {
             max-width: 1200px; margin: 0 auto; padding: 20px 20px 40px 20px;
             display: flex; flex-direction: column; gap: 30px; position: relative; z-index: 10;
             flex-grow: 1; width: 100%; box-sizing: border-box;
         }
 
-        /* Top Floating Controls */
         .top-controls {
             display: flex; justify-content: space-between; align-items: center; width: 100%;
         }
@@ -170,7 +167,7 @@
 
         .account-box {
             background: rgba(0,0,0,0.5); border: 2px dashed var(--gold);
-            border-radius: 16px; padding: 20px; position: relative; overflow: hidden;
+            border-radius: 16px; padding: 20px; position: relative; overflow: hidden; margin-bottom: 20px;
         }
         .donate-number { font-size: 2.5rem; color: var(--primary); font-weight: 900; letter-spacing: 3px; margin: 10px 0; text-shadow: 0 2px 5px rgba(0,0,0,0.8); }
         .provider-tags { display: flex; justify-content: center; gap: 10px; margin-bottom: 5px; }
@@ -178,20 +175,29 @@
         .tag.jazz { background: #E11422; box-shadow: 0 0 15px rgba(225, 20, 34, 0.5); } 
         .tag.easy { background: #40B14A; box-shadow: 0 0 15px rgba(64, 177, 74, 0.5); }
 
+        /* Share Button Design and Animation */
         .btn-share {
             background: linear-gradient(135deg, #25D366 0%, #128C7E 100%); color: white;
             border: 1px solid rgba(255,255,255,0.2); padding: 18px 30px; font-size: 1.5rem; border-radius: 50px; cursor: pointer;
             box-shadow: 0 10px 30px rgba(37, 211, 102, 0.4); font-family: 'Noto Nastaliq Urdu', serif;
-            display: flex; align-items: center; justify-content: center; gap: 15px; width: 100%; transition: all 0.3s;
+            display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; transition: all 0.3s;
+            animation: pulse-share 2s infinite;
         }
-        .btn-share:hover { transform: scale(1.03); box-shadow: 0 15px 40px rgba(37, 211, 102, 0.7); }
+        .btn-share:hover { transform: scale(1.03); animation: none; box-shadow: 0 15px 40px rgba(37, 211, 102, 0.8); }
+        
+        @keyframes pulse-share {
+            0% { transform: scale(1); box-shadow: 0 10px 30px rgba(37, 211, 102, 0.4); }
+            50% { transform: scale(1.03); box-shadow: 0 15px 40px rgba(37, 211, 102, 0.7); }
+            100% { transform: scale(1); box-shadow: 0 10px 30px rgba(37, 211, 102, 0.4); }
+        }
 
         .hadith-card { border-top: 5px solid var(--gold); }
         
+        /* TICKER FIXED TO BOTTOM */
         .dua-ticker-container {
             width: 100%; background: rgba(0,0,0,0.7); border-top: 1px solid rgba(251, 191, 36, 0.5);
             color: var(--gold); padding: 12px 0; font-size: 1.3rem; backdrop-filter: blur(5px);
-            margin-top: auto;
+            margin-top: auto; 
         }
     </style>
 </head>
@@ -204,7 +210,8 @@
     <div class="container">
         
         <div class="top-controls">
-            <div></div> <div class="timer-badge" id="countdownTimer">
+            <div></div> 
+            <div class="timer-badge" id="countdownTimer">
                 <span style="font-size:1.2rem;">⏳</span> <span>سحری میں باقی:</span>
                 <span class="english-num" id="timeDigits">00:00:00</span>
             </div>
@@ -240,6 +247,7 @@
             </div>
 
             <div class="details-section">
+                
                 <div class="info-card">
                     <h3 class="card-heading">آپ کتنے گھروں کی سحری کروانا چاہتے ہیں؟</h3>
                     <p style="font-size: 1.2rem; color: #D1D5DB; margin:0;">آپ کا ایک چھوٹا سا عمل کسی کی سحری کا سبب بن سکتا ہے۔</p>
@@ -257,20 +265,11 @@
                         <div class="donate-number english-num">0305-7242598</div>
                         <p style="font-size: 1.3rem; font-family: 'Poppins'; margin:0; font-weight:600; color:#F9FAFB; letter-spacing: 1px;">MUHAMMAD ASGHAR</p>
                     </div>
+                    
+                    <button class="btn-share" onclick="shareOnWhatsApp()">
+                        <span style="font-size: 1.8rem; margin-left: 5px;">📲</span> ثواب کے لیے شیئر کریں
+                    </button>
                 </div>
-
-               <button class="btn-share" onclick="shareOnWhatsApp()" style="animation: pulse-share 2s infinite;">
-    <span style="font-size: 1.8rem;">📲</span> ثواب کے لیے شیئر کریں
-</button>
-
-<style>
-/* Button ki pyari si animation ke liye yeh CSS kahin bhi <style> ke andar daal dein */
-@keyframes pulse-share {
-    0% { transform: scale(1); box-shadow: 0 10px 30px rgba(37, 211, 102, 0.4); }
-    50% { transform: scale(1.05); box-shadow: 0 15px 40px rgba(37, 211, 102, 0.7); }
-    100% { transform: scale(1); box-shadow: 0 10px 30px rgba(37, 211, 102, 0.4); }
-}
-</style>
 
                 <div class="info-card hadith-card">
                     <h3 class="card-heading">✨ آج کی حدیث</h3>
@@ -369,16 +368,14 @@
             document.getElementById('impactFamilies').innerText = families;
         }
 
-       function shareOnWhatsApp() {
-    // Akher level emotional message
-    const text = "السلام علیکم! 🌙\n\nکیا آپ کسی کے روزے کی شروعات کا حصہ بننا چاہیں گے؟ 🥺\nفیصل آباد میں 25 مستحق گھروں تک سحری پہنچانے کے اس کارِ خیر میں ہمارا ساتھ دیں۔ صرف 320 روپے میں ایک گھر کی سحری کا ثواب کمائیں۔\n\nJazzCash / EasyPaisa: 03057242598 (M. Asghar)\n\nہماری ویب سائٹ پر لائیو ڈونیشن جار دیکھیں:\nhttps://jannahpath.github.io/Gateway2Jannah/\n\n(اس میسج کو آگے شیئر کر کے صدقہ جاریہ میں حصہ لیں 💚)";
-    
-    // Message ko WhatsApp format mein convert karna
-    const encodedText = encodeURIComponent(text);
-    
-    // WhatsApp open karna
-    window.open(`https://wa.me/?text=${encodedText}`, '_blank');
-}
+        // EMOTIONAL SHARE FUNCTION UPDATE
+        function shareOnWhatsApp() {
+            const text = "السلام علیکم! 🌙\n\nکیا آپ کسی کے روزے کی شروعات کا حصہ بننا چاہیں گے؟ 🥺\nفیصل آباد میں 25 مستحق گھروں تک سحری پہنچانے کے اس کارِ خیر میں ہمارا ساتھ دیں۔ صرف 320 روپے میں ایک گھر کی سحری کا ثواب کمائیں۔\n\nJazzCash / EasyPaisa: 03057242598 (M. Asghar)\n\nہماری ویب سائٹ پر لائیو ڈونیشن جار دیکھیں:\nhttps://jannahpath.github.io/Gateway2Jannah/\n\n(اس میسج کو آگے شیئر کر کے صدقہ جاریہ میں حصہ لیں 💚)";
+            
+            const encodedText = encodeURIComponent(text);
+            window.open(`https://wa.me/?text=${encodedText}`, '_blank');
+        }
+
         function updateTimer() {
             const now = new Date();
             const sehriTime = new Date();
