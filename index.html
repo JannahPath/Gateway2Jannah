@@ -25,6 +25,7 @@
                         url('https://images.unsplash.com/photo-1590076215667-872ab694c153?q=80&w=2070&auto=format&fit=crop') center/cover fixed;
             color: var(--text-light);
             margin: 0; padding: 0; min-height: 100vh; overflow-x: hidden;
+            display: flex; flex-direction: column;
         }
 
         .english-num { font-family: 'Poppins', sans-serif; }
@@ -34,94 +35,83 @@
             position: absolute; top: -10px; width: 60px;
             filter: drop-shadow(0 0 15px rgba(251, 191, 36, 0.6));
             animation: swing 4s infinite ease-in-out alternate;
-            transform-origin: top center; z-index: 0;
+            transform-origin: top center; z-index: 0; pointer-events: none;
         }
         .lantern.left { left: 5%; animation-delay: 0.5s; }
         .lantern.right { right: 5%; width: 45px; animation-duration: 3s; }
         @keyframes swing { 0% { transform: rotate(8deg); } 100% { transform: rotate(-8deg); } }
 
-        /* Top Bar */
-        .top-bar {
-            display: flex; justify-content: center; align-items: center;
-            padding: 15px 5%; width: 100%; box-sizing: border-box;
-            background: rgba(0,0,0,0.4); backdrop-filter: blur(10px); 
-            border-bottom: 1px solid var(--glass-border); position: sticky; top: 0; z-index: 100;
+        /* Main Container */
+        .container {
+            max-width: 1200px; margin: 0 auto; padding: 20px 20px 40px 20px;
+            display: flex; flex-direction: column; gap: 30px; position: relative; z-index: 10;
+            flex-grow: 1; width: 100%; box-sizing: border-box;
         }
-        .timer-box {
-            background: rgba(251, 191, 36, 0.15); padding: 8px 25px;
+
+        /* Top Floating Controls (Replaces the top bar) */
+        .top-controls {
+            display: flex; justify-content: space-between; align-items: center; width: 100%;
+        }
+        .timer-badge {
+            background: rgba(251, 191, 36, 0.15); padding: 8px 20px;
             border-radius: 30px; font-weight: 600; color: var(--gold);
             border: 1px solid rgba(251, 191, 36, 0.3); display: flex; align-items: center; gap: 8px; font-size: 1.1rem;
-            box-shadow: 0 0 20px rgba(251, 191, 36, 0.1);
+            backdrop-filter: blur(10px); box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
+        .theme-toggle { background: none; border: none; font-size: 1.5rem; cursor: pointer; transition: 0.3s; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));}
+        .theme-toggle:hover { transform: rotate(20deg); }
 
-        .container {
-            max-width: 1200px; margin: 0 auto; padding: 40px 20px 80px 20px;
-            display: flex; flex-direction: column; gap: 40px; position: relative; z-index: 10;
-        }
+        .header-section { text-align: center; margin-bottom: 0px; }
+        .header-title { font-size: 3.5rem; color: var(--primary); margin: 0; text-shadow: 0 0 25px rgba(52, 211, 153, 0.5); }
+        .emotional-text { font-size: 1.6rem; color: var(--gold); margin: 10px 0; font-weight: bold; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
 
-        .header-section { text-align: center; margin-bottom: 10px; }
-        .header-title { font-size: 3.8rem; color: var(--primary); margin: 0; text-shadow: 0 0 25px rgba(52, 211, 153, 0.5); }
-        .emotional-text { font-size: 1.8rem; color: var(--gold); margin: 10px 0; font-weight: bold; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
-        .subtitle { color: #D1D5DB; font-size: 1.2rem; margin-top: 10px; font-family: 'Poppins'; letter-spacing: 2px; }
-
-        .content-wrapper { display: flex; flex-direction: column; gap: 60px; align-items: center; margin-top: 20px;}
+        .content-wrapper { display: flex; flex-direction: column; gap: 50px; align-items: center; margin-top: 10px;}
         @media (min-width: 900px) {
             .content-wrapper { flex-direction: row; justify-content: space-between; align-items: stretch; gap: 60px; }
             .jar-section, .details-section { flex: 1; width: 50%; }
         }
 
-        /* =========================================
-           THE MEGA VIP 3D JAR (AKHER LEVEL)
-           ========================================= */
+        /* THE VIP JAR */
         .jar-section { display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; }
         
-        /* Glowing Aura behind Jar */
         .jar-aura {
             position: absolute; width: 300px; height: 400px;
-            background: radial-gradient(circle, rgba(52, 211, 153, 0.2) 0%, rgba(0,0,0,0) 70%);
-            top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 0; pointer-events: none;
+            background: radial-gradient(circle, rgba(52, 211, 153, 0.15) 0%, rgba(0,0,0,0) 70%);
+            top: 40%; left: 50%; transform: translate(-50%, -50%); z-index: 0; pointer-events: none;
         }
 
         .jar-wrapper { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center;}
 
-        /* Gold Lid / Rim */
         .jar-lid {
-            width: 180px; height: 35px; background: linear-gradient(to bottom, #FCE68E, #D4AF37, #B8860B);
+            width: 160px; height: 30px; background: linear-gradient(to bottom, #FCE68E, #D4AF37, #B8860B);
             border-radius: 10px 10px 5px 5px; margin-bottom: -5px; z-index: 10; position: relative;
             box-shadow: 0 10px 20px rgba(0,0,0,0.5), inset 0 2px 5px rgba(255,255,255,0.8);
             border: 1px solid rgba(255,255,255,0.3);
         }
 
-        /* The Main Huge Glass Body */
         .glass-jar {
-            width: 320px; height: 450px; /* BARA SIZE */
+            width: 280px; height: 400px; 
             background: rgba(255, 255, 255, 0.03); 
             border: 4px solid rgba(255, 255, 255, 0.3);
-            border-top: none; border-radius: 10px 10px 90px 90px;
+            border-top: none; border-radius: 10px 10px 80px 80px;
             position: relative; overflow: hidden;
-            box-shadow: 
-                inset -20px -20px 50px rgba(0,0,0,0.6), 
-                inset 20px 20px 50px rgba(255,255,255,0.1),
-                0 30px 60px rgba(0,0,0,0.6);
+            box-shadow: inset -20px -20px 50px rgba(0,0,0,0.6), inset 20px 20px 50px rgba(255,255,255,0.1), 0 30px 60px rgba(0,0,0,0.6);
             backdrop-filter: blur(10px);
         }
 
-        /* 3D Glass Shine */
         .glass-jar::after {
             content: ''; position: absolute; top: 0; left: 10%; width: 15%; height: 100%;
             background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0) 100%);
             transform: skewX(-15deg); pointer-events: none; z-index: 5;
         }
 
-        /* The Animated Liquid */
         .liquid {
             position: absolute; bottom: 0; left: 0; width: 100%; height: 0%;
             background: linear-gradient(180deg, #10B981 0%, #064E3B 100%);
-            border-radius: 0 0 85px 85px; transition: height 2s cubic-bezier(0.2, 0.8, 0.2, 1);
+            border-radius: 0 0 75px 75px; transition: height 2s cubic-bezier(0.2, 0.8, 0.2, 1);
             box-shadow: 0 -15px 40px rgba(16, 185, 129, 0.6); overflow: hidden;
         }
         
-        /* Waves on Top of Liquid */
         .liquid::before, .liquid::after {
             content: ''; position: absolute; top: -15px; left: -50%; width: 200%; height: 35px;
             background: rgba(255, 255, 255, 0.2); border-radius: 50%; animation: wave 4s infinite linear;
@@ -129,72 +119,81 @@
         .liquid::after { top: -20px; background: rgba(52, 211, 153, 0.3); animation: wave 6s infinite linear reverse; }
         @keyframes wave { 0% { transform: translateX(0) scaleY(1); } 50% { transform: translateX(-25%) scaleY(1.3); } 100% { transform: translateX(-50%) scaleY(1); } }
 
-        /* Bubbles inside liquid */
-        .bubble {
-            position: absolute; bottom: -20px; background: rgba(255, 255, 255, 0.4); border-radius: 50%;
-            animation: rise linear infinite;
-        }
+        .bubble { position: absolute; bottom: -20px; background: rgba(255, 255, 255, 0.4); border-radius: 50%; animation: rise linear infinite; }
         @keyframes rise { 0% { transform: translateY(0) scale(1); opacity: 1; } 100% { transform: translateY(-400px) scale(0.5); opacity: 0; } }
 
-        /* The Giant Text inside Jar */
         .amount-display {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            font-size: 3.5rem; font-weight: 900; color: white;
+            font-size: 3.2rem; font-weight: 900; color: white;
             text-shadow: 0 5px 20px rgba(0,0,0,0.9), 0 0 10px rgba(52, 211, 153, 0.5); z-index: 10; width: 100%; text-align: center;
         }
 
-        /* Gold Pedestal Base */
         .jar-base {
-            width: 250px; height: 30px; background: linear-gradient(to right, #6B7280, #1F2937, #6B7280);
-            border-radius: 50%; margin-top: -15px; z-index: 1;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.8), inset 0 5px 10px rgba(255,255,255,0.2);
-            border: 2px solid #4B5563;
+            width: 220px; height: 25px; background: linear-gradient(to right, #6B7280, #1F2937, #6B7280);
+            border-radius: 50%; margin-top: -10px; z-index: 1;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.8), inset 0 5px 10px rgba(255,255,255,0.2); border: 2px solid #4B5563;
         }
-        /* ========================================= */
+
+        /* --- NEW: REMAINING / SURPLUS BOXES --- */
+        .stats-container {
+            display: flex; justify-content: center; gap: 15px; margin-top: 25px; width: 100%; max-width: 320px;
+        }
+        .stat-box {
+            background: rgba(0,0,0,0.5); border: 1px solid var(--glass-border);
+            border-radius: 15px; padding: 12px 15px; text-align: center; flex: 1;
+            backdrop-filter: blur(5px); box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+        }
+        .stat-label { display: block; font-size: 0.95rem; color: #D1D5DB; margin-bottom: 5px; }
+        .stat-value { font-size: 1.6rem; color: var(--gold); font-weight: 900; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+        .stat-value.surplus { color: var(--primary); }
+        .stat-value.complete { font-size: 1.2rem; color: var(--primary); font-family: 'Noto Nastaliq Urdu', serif;}
 
         /* Cards and Details */
-        .details-section { display: flex; flex-direction: column; gap: 25px; width: 100%; max-width: 500px; }
+        .details-section { display: flex; flex-direction: column; gap: 20px; width: 100%; max-width: 500px; }
         .info-card {
             background: var(--glass-bg); backdrop-filter: blur(16px);
-            padding: 35px; border-radius: 24px; border: 1px solid var(--glass-border);
+            padding: 30px; border-radius: 24px; border: 1px solid var(--glass-border);
             box-shadow: 0 20px 40px var(--shadow-color); text-align: center;
         }
-        .card-heading { color: var(--primary); margin: 0 0 15px 0; font-size: 2rem; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+        .card-heading { color: var(--primary); margin: 0 0 15px 0; font-size: 1.8rem; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
         
         input[type=range] { 
-            width: 100%; margin: 30px 0; accent-color: var(--primary); height: 10px;
+            width: 100%; margin: 25px 0; accent-color: var(--primary); height: 8px;
             background: rgba(255,255,255,0.2); border-radius: 10px; outline: none; -webkit-appearance: none;
         }
         input[type=range]::-webkit-slider-thumb {
-            -webkit-appearance: none; width: 30px; height: 30px; border-radius: 50%;
+            -webkit-appearance: none; width: 28px; height: 28px; border-radius: 50%;
             background: var(--gold); cursor: pointer; box-shadow: 0 0 20px rgba(251, 191, 36, 1); border: 3px solid white;
         }
 
-        .impact-text { font-size: 1.6rem; color: var(--text-light); background: rgba(52, 211, 153, 0.15); padding: 15px; border-radius: 12px; margin-bottom: 25px; border: 1px solid rgba(52, 211, 153, 0.3);}
-        .impact-text span.english-num { color: var(--gold); font-weight: bold; font-size: 1.8rem;}
+        .impact-text { font-size: 1.4rem; color: var(--text-light); background: rgba(52, 211, 153, 0.15); padding: 12px; border-radius: 12px; margin-bottom: 25px; border: 1px solid rgba(52, 211, 153, 0.3);}
+        .impact-text span.english-num { color: var(--gold); font-weight: bold; font-size: 1.6rem;}
 
         .account-box {
             background: rgba(0,0,0,0.5); border: 2px dashed var(--gold);
-            border-radius: 16px; padding: 25px; position: relative; overflow: hidden;
+            border-radius: 16px; padding: 20px; position: relative; overflow: hidden;
         }
-        .donate-number { font-size: 2.8rem; color: var(--primary); font-weight: 900; letter-spacing: 3px; margin: 15px 0; text-shadow: 0 2px 5px rgba(0,0,0,0.8); }
+        .donate-number { font-size: 2.5rem; color: var(--primary); font-weight: 900; letter-spacing: 3px; margin: 10px 0; text-shadow: 0 2px 5px rgba(0,0,0,0.8); }
         .provider-tags { display: flex; justify-content: center; gap: 10px; margin-bottom: 5px; }
-        .tag { font-family: 'Poppins'; font-size: 1rem; padding: 6px 16px; border-radius: 20px; color: white; font-weight: bold; text-transform: uppercase;}
+        .tag { font-family: 'Poppins'; font-size: 0.9rem; padding: 5px 14px; border-radius: 20px; color: white; font-weight: bold; text-transform: uppercase;}
         .tag.jazz { background: #E11422; box-shadow: 0 0 15px rgba(225, 20, 34, 0.5); } 
         .tag.easy { background: #40B14A; box-shadow: 0 0 15px rgba(64, 177, 74, 0.5); }
 
         .btn-share {
             background: linear-gradient(135deg, #25D366 0%, #128C7E 100%); color: white;
-            border: 1px solid rgba(255,255,255,0.2); padding: 20px 30px; font-size: 1.6rem; border-radius: 50px; cursor: pointer;
+            border: 1px solid rgba(255,255,255,0.2); padding: 18px 30px; font-size: 1.5rem; border-radius: 50px; cursor: pointer;
             box-shadow: 0 10px 30px rgba(37, 211, 102, 0.4); font-family: 'Noto Nastaliq Urdu', serif;
             display: flex; align-items: center; justify-content: center; gap: 15px; width: 100%; transition: all 0.3s;
         }
         .btn-share:hover { transform: scale(1.03); box-shadow: 0 15px 40px rgba(37, 211, 102, 0.7); }
 
         .hadith-card { border-top: 5px solid var(--gold); }
+        
+        /* TICKER FIXED TO NORMAL FLOW (AT BOTTOM) */
         .dua-ticker-container {
-            position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(0,0,0,0.85); border-top: 2px solid var(--gold);
-            color: var(--gold); padding: 12px 0; z-index: 100; font-size: 1.4rem; backdrop-filter: blur(10px);
+            width: 100%; background: rgba(0,0,0,0.7); border-top: 1px solid rgba(251, 191, 36, 0.5);
+            color: var(--gold); padding: 12px 0; font-size: 1.3rem; backdrop-filter: blur(5px);
+            margin-top: auto; /* Pushes it to the very bottom */
         }
     </style>
 </head>
@@ -204,18 +203,19 @@
     <img src="https://cdn-icons-png.flaticon.com/512/8202/8202688.png" alt="Lantern" class="lantern left">
     <img src="https://cdn-icons-png.flaticon.com/512/8202/8202688.png" alt="Lantern" class="lantern right">
 
-    <div class="top-bar">
-        <div class="timer-box" id="countdownTimer">
-            <span style="font-size:1.3rem;">⏳</span> <span>فیصل آباد سحری میں باقی: </span>
-            <span class="english-num" id="timeDigits">00:00:00</span>
-        </div>
-    </div>
-
     <div class="container">
+        
+        <div class="top-controls">
+            <button class="theme-toggle" onclick="toggleTheme()" title="Switch Theme">🌙</button>
+            <div class="timer-badge" id="countdownTimer">
+                <span style="font-size:1.2rem;">⏳</span> <span>سحری میں باقی:</span>
+                <span class="english-num" id="timeDigits">00:00:00</span>
+            </div>
+        </div>
+
         <div class="header-section">
             <h1 class="header-title">فری سحری پوائنٹ</h1>
             <p class="emotional-text">کسی کے دسترخوان کی رونق بنیں</p>
-            <p class="subtitle english-num">TARGET: 25 HOMES | DAILY GOAL: Rs. 8,000</p>
         </div>
 
         <div class="content-wrapper">
@@ -225,19 +225,27 @@
                     <div class="jar-lid"></div>
                     <div class="glass-jar">
                         <div class="liquid" id="jarLiquid"></div>
-                        <div class="amount-display english-num" id="progressText">Rs. 0</div>
+                        <div class="amount-display english-num" id="progressText">0</div>
                     </div>
                     <div class="jar-base"></div>
                 </div>
-                <p style="color: var(--gold); font-size: 1.6rem; font-weight: bold; margin-top: 30px; text-shadow: 0 2px 5px rgba(0,0,0,0.9);" id="statusMessage">
-                    آج کی سحری کا فنڈ اکٹھا ہو رہا ہے...
-                </p>
+
+                <div class="stats-container">
+                    <div class="stat-box">
+                        <span class="stat-label">روز کا ہدف</span>
+                        <span class="stat-value english-num" style="color: #D1D5DB;">8,000</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label" id="remainingLabel">باقی ضرورت</span>
+                        <span class="stat-value english-num" id="remainingValue">8,000</span>
+                    </div>
+                </div>
             </div>
 
             <div class="details-section">
                 <div class="info-card">
                     <h3 class="card-heading">آپ کتنے گھروں کی سحری کروانا چاہتے ہیں؟</h3>
-                    <p style="font-size: 1.3rem; color: #D1D5DB; margin:0;">آپ کا ایک چھوٹا سا عمل کسی کی سحری کا سبب بن سکتا ہے۔</p>
+                    <p style="font-size: 1.2rem; color: #D1D5DB; margin:0;">آپ کا ایک چھوٹا سا عمل کسی کی سحری کا سبب بن سکتا ہے۔</p>
                     
                     <input type="range" id="donationSlider" min="320" max="8000" step="320" value="320" oninput="updateImpact()">
                     <div class="impact-text">
@@ -250,18 +258,18 @@
                             <span class="tag easy">EASYPAISA</span>
                         </div>
                         <div class="donate-number english-num">0305-7242598</div>
-                        <p style="font-size: 1.4rem; font-family: 'Poppins'; margin:0; font-weight:600; color:#F9FAFB; letter-spacing: 1px;">MUHAMMAD ASGHAR</p>
+                        <p style="font-size: 1.3rem; font-family: 'Poppins'; margin:0; font-weight:600; color:#F9FAFB; letter-spacing: 1px;">MUHAMMAD ASGHAR</p>
                     </div>
                 </div>
 
                 <button class="btn-share" onclick="shareOnWhatsApp()">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.347-.272.297-1.04 1.016-1.04 2.479 0 1.463 1.065 2.876 1.213 3.074.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.347-.272.297-1.04 1.016-1.04 2.479 0 1.463 1.065 2.876 1.213 3.074.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
                     ثواب کے لیے شیئر کریں
                 </button>
 
                 <div class="info-card hadith-card">
                     <h3 class="card-heading">✨ آج کی حدیث</h3>
-                    <p style="font-size: 1.4rem; line-height: 2.2; margin-bottom: 0; color: #F9FAFB;">"جس نے کسی روزہ دار کو روزہ افطار کرایا، اس کے لئے بھی روزہ دار کے برابر ثواب ہے۔"</p>
+                    <p style="font-size: 1.3rem; line-height: 2.2; margin-bottom: 0; color: #F9FAFB;">"جس نے کسی روزہ دار کو روزہ افطار کرایا، اس کے لئے بھی روزہ دار کے برابر ثواب ہے۔"</p>
                 </div>
             </div>
         </div>
@@ -289,7 +297,6 @@
         const dailyGoal = 8000;
         let previousFunds = -1; 
 
-        // Generate Bubbles inside liquid
         function createBubbles() {
             const liquid = document.getElementById('jarLiquid');
             setInterval(() => {
@@ -309,19 +316,31 @@
         db.ref('sehri_campaign/funds').on('value', (snapshot) => {
             const currentFunds = snapshot.val() || 0;
             
+            // Jar Fill Calculation
             let percentage = (currentFunds / dailyGoal) * 100;
             if (percentage > 100) percentage = 100;
-
             document.getElementById('jarLiquid').style.height = percentage + '%';
-            document.getElementById('progressText').innerText = `Rs. ${currentFunds.toLocaleString()}`;
+            document.getElementById('progressText').innerText = currentFunds.toLocaleString();
 
-            const statusEl = document.getElementById('statusMessage');
-            if(percentage >= 100) {
-                statusEl.innerText = "الحمدللہ! آج کا ہدف مکمل ہو گیا۔ جزاک اللہ خیر 💚";
-                statusEl.style.color = "var(--primary)";
+            // NEW: Remaining & Surplus Logic
+            const remLabel = document.getElementById('remainingLabel');
+            const remValue = document.getElementById('remainingValue');
+            const remaining = dailyGoal - currentFunds;
+
+            remValue.classList.remove('surplus', 'complete');
+            
+            if (remaining > 0) {
+                remLabel.innerText = "باقی ضرورت";
+                remValue.innerText = remaining.toLocaleString();
+                remValue.style.color = "var(--gold)";
+            } else if (remaining === 0) {
+                remLabel.innerText = "سٹیٹس";
+                remValue.innerText = "مکمل الحمدللہ";
+                remValue.classList.add('complete');
             } else {
-                statusEl.innerText = "آج کی سحری کا فنڈ اکٹھا ہو رہا ہے...";
-                statusEl.style.color = "var(--gold)";
+                remLabel.innerText = "اضافی فنڈ (Surplus)";
+                remValue.innerText = Math.abs(remaining).toLocaleString();
+                remValue.classList.add('surplus');
             }
 
             if (previousFunds !== -1 && currentFunds > previousFunds) {
