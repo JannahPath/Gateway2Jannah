@@ -26,21 +26,30 @@
             color: var(--text-light);
             margin: 0; padding: 0; min-height: 100vh; overflow-x: hidden;
             display: flex; flex-direction: column;
-            -webkit-font-smoothing: antialiased; scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased; 
         }
 
         .english-num { font-family: 'Poppins', sans-serif; }
 
-        /* Audio Toggle Button */
-        .audio-toggle {
-            position: fixed; top: 15px; left: 15px; z-index: 1000;
-            background: rgba(251, 191, 36, 0.15); border: 1px solid rgba(251, 191, 36, 0.4);
-            color: var(--gold); padding: 8px 15px; border-radius: 30px;
-            font-family: 'Poppins'; font-weight: 600; cursor: pointer;
-            backdrop-filter: blur(5px); box-shadow: 0 0 15px rgba(251, 191, 36, 0.2);
-            transition: 0.3s; display: flex; align-items: center; gap: 8px;
+        /* Audio Indicator Badge */
+        .audio-indicator {
+            position: fixed; top: 15px; left: 15px; z-index: 100;
+            background: rgba(0,0,0,0.5); border: 1px solid var(--gold); color: var(--gold);
+            padding: 5px 12px; border-radius: 20px; font-size: 0.9rem; cursor: pointer;
+            backdrop-filter: blur(5px); transition: 0.3s;
         }
-        .audio-toggle:hover { transform: scale(1.05); }
+
+        /* Lanterns Optimized */
+        .lantern {
+            position: absolute; top: -10px; width: 50px; 
+            filter: drop-shadow(0 0 10px rgba(251, 191, 36, 0.4));
+            animation: swing 4s infinite ease-in-out alternate;
+            transform-origin: top center; z-index: 0; pointer-events: none;
+            transform: translateZ(0); 
+        }
+        .lantern.left { left: 3%; animation-delay: 0.5s; }
+        .lantern.right { right: 3%; width: 40px; animation-duration: 3s; }
+        @keyframes swing { 0% { transform: rotate(5deg); } 100% { transform: rotate(-5deg); } } 
 
         .container {
             max-width: 1200px; margin: 0 auto; 
@@ -49,7 +58,7 @@
             flex-grow: 1; width: 100%; box-sizing: border-box;
         }
 
-        .top-controls { display: flex; justify-content: flex-end; align-items: center; width: 100%; margin-top: 10px;}
+        .top-controls { display: flex; justify-content: flex-end; align-items: center; width: 100%; }
         .timer-badge {
             background: rgba(251, 191, 36, 0.1); padding: 6px 15px;
             border-radius: 20px; font-weight: 600; color: var(--gold);
@@ -69,11 +78,11 @@
             .emotional-text { font-size: 1.8rem; }
         }
 
-        /* VIP JAR CSS */
+        /* THE VIP JAR */
         .jar-section { display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; width: 100%;}
         .jar-aura {
             position: absolute; width: 250px; height: 350px;
-            background: radial-gradient(circle, rgba(16, 185, 129, 0.15) 0%, rgba(0,0,0,0) 70%);
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.1) 0%, rgba(0,0,0,0) 70%);
             top: 40%; left: 50%; transform: translate(-50%, -50%); z-index: 0; pointer-events: none;
         }
         .jar-wrapper { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; transform: translateZ(0);}
@@ -122,97 +131,95 @@
         .stat-box { background: rgba(0,0,0,0.4); border: 1px solid var(--glass-border); border-radius: 12px; padding: 10px 12px; text-align: center; flex: 1; backdrop-filter: blur(5px); }
         .stat-label { display: block; font-size: 0.85rem; color: #9CA3AF; margin-bottom: 2px; }
         .stat-value { font-size: 1.4rem; color: var(--gold); font-weight: 700; }
+        .stat-value.complete { font-size: 1rem; color: var(--primary); font-family: 'Noto Nastaliq Urdu', serif;}
 
-        /* General Info Cards */
+        /* Details Section */
         .details-section { display: flex; flex-direction: column; gap: 15px; width: 100%; max-width: 500px; }
         .info-card {
             background: var(--glass-bg); backdrop-filter: blur(10px);
             padding: 20px; border-radius: 20px; border: 1px solid var(--glass-border);
             box-shadow: 0 10px 30px rgba(0,0,0,0.5); text-align: center;
         }
-        .card-heading { color: var(--primary); margin: 0 0 10px 0; font-size: 1.5rem; text-shadow: 0 2px 4px rgba(0,0,0,0.5);}
+        .card-heading { color: var(--primary); margin: 0 0 10px 0; font-size: 1.5rem; }
         
         input[type=range] { width: 100%; margin: 15px 0; accent-color: var(--primary); height: 6px; background: rgba(255,255,255,0.1); border-radius: 10px; outline: none; -webkit-appearance: none; }
-        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 24px; height: 24px; border-radius: 50%; background: var(--gold); cursor: pointer; box-shadow: 0 0 15px rgba(251, 191, 36, 0.8); border: 2px solid white; }
+        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 26px; height: 26px; border-radius: 50%; background: var(--gold); cursor: pointer; box-shadow: 0 0 15px rgba(251, 191, 36, 0.8); border: 2px solid white; }
 
         .impact-text { font-size: 1.2rem; color: var(--text-light); background: rgba(16, 185, 129, 0.1); padding: 10px; border-radius: 10px; margin-bottom: 15px; border: 1px solid rgba(16, 185, 129, 0.2);}
-        
-        .btn-action {
+        .impact-text span.english-num { color: var(--gold); font-weight: bold; font-size: 1.4rem;}
+
+        .account-box { background: rgba(0,0,0,0.4); border: 1px dashed var(--gold); border-radius: 12px; padding: 15px; margin-bottom: 10px; }
+        .donate-number { font-size: 2.2rem; color: var(--primary); font-weight: 700; letter-spacing: 2px; margin: 5px 0; }
+        .provider-tags { display: flex; justify-content: center; gap: 8px; margin-bottom: 5px; }
+        .tag { font-family: 'Poppins'; font-size: 0.8rem; padding: 4px 10px; border-radius: 15px; color: white; font-weight: bold; }
+        .tag.jazz { background: #E11422; } .tag.easy { background: #40B14A; }
+
+        /* ACTION BUTTONS */
+        .btn-donate {
             background: linear-gradient(135deg, var(--gold) 0%, #D4AF37 100%); color: #111827;
-            border: none; padding: 12px 25px; font-size: 1.3rem; border-radius: 30px; cursor: pointer;
-            font-family: 'Noto Nastaliq Urdu', serif; display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; 
-            font-weight: bold; box-shadow: 0 5px 15px rgba(251, 191, 36, 0.3); transition: 0.3s;
+            border: none; padding: 12px 20px; font-size: 1.4rem; border-radius: 30px; cursor: pointer;
+            font-family: 'Noto Nastaliq Urdu', serif; display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; font-weight: bold;
+            box-shadow: 0 5px 15px rgba(251, 191, 36, 0.3); transition: 0.3s; margin-bottom: 10px;
+            animation: pulse-gold 2s infinite;
         }
-        .btn-action:hover { transform: scale(1.02); box-shadow: 0 8px 20px rgba(251, 191, 36, 0.5); }
+        @keyframes pulse-gold { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
+        
+        .btn-share {
+            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%); color: white; border: none; padding: 10px 20px; font-size: 1.2rem; border-radius: 30px; cursor: pointer; font-family: 'Noto Nastaliq Urdu', serif; display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; transition: all 0.3s;
+        }
 
-        /* Heatmap Section */
-        .heatmap-container {
-            height: 120px; background: url('https://upload.wikimedia.org/wikipedia/commons/e/e0/Faisalabad_in_Punjab.svg') center/cover;
-            border-radius: 15px; position: relative; overflow: hidden; opacity: 0.8; border: 1px solid var(--glass-border);
-            margin-top: 15px; background-blend-mode: overlay; background-color: #111827;
-        }
-        .pulse-dot {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            font-size: 1.5rem; animation: heartbeat 1.5s infinite; filter: drop-shadow(0 0 10px red);
-        }
-        @keyframes heartbeat { 0% { transform: scale(1); } 20% { transform: scale(1.3); } 40% { transform: scale(1); } }
+        /* KHAMOSH DUAIN SECTION */
+        .input-text { width: 90%; padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.3); color: white; font-family: 'Noto Nastaliq Urdu'; font-size: 1.1rem; margin-bottom: 10px; text-align: center; outline: none; }
+        .btn-submit { background: #1F2937; color: white; border: 1px solid var(--primary); padding: 8px; border-radius: 20px; cursor: pointer; font-family: 'Noto Nastaliq Urdu'; width: 100%; font-size: 1.1rem; transition: 0.3s; }
+        .prayer-list { margin-top: 15px; max-height: 120px; overflow-y: auto; text-align: right; padding-right: 5px; }
+        .prayer-item { border-bottom: 1px solid rgba(255,255,255,0.1); padding: 8px 0; color: #D1D5DB; font-size: 1rem; animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Prayer Board Inputs */
-        .input-text {
-            width: 90%; padding: 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.2);
-            background: rgba(0,0,0,0.3); color: white; font-family: 'Noto Nastaliq Urdu'; font-size: 1rem;
-            margin-bottom: 10px; text-align: center; outline: none;
-        }
-        .prayer-list {
-            margin-top: 15px; max-height: 120px; overflow-y: auto; text-align: right; padding-right: 10px;
-        }
-        .prayer-item { border-bottom: 1px solid rgba(255,255,255,0.1); padding: 8px 0; color: #D1D5DB; font-size: 0.95rem; }
-
-        /* Popups (Modals) */
+        /* POPUP MODAL (Smooth 16k Feel) */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8); backdrop-filter: blur(8px);
-            display: none; justify-content: center; align-items: center; z-index: 9999;
+            background: rgba(0,0,0,0.7); backdrop-filter: blur(8px);
+            display: flex; justify-content: center; align-items: center;
+            z-index: 9999; opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
         }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
         .modal-content {
             background: linear-gradient(135deg, #1F2937, #111827); border: 2px solid var(--gold);
-            padding: 30px; border-radius: 20px; text-align: center; width: 90%; max-width: 400px;
-            box-shadow: 0 0 30px rgba(251, 191, 36, 0.2); animation: popIn 0.3s ease-out; position: relative;
+            padding: 30px 20px; border-radius: 20px; text-align: center; width: 85%; max-width: 350px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.8); transform: scale(0.8); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative;
         }
-        @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-        .close-btn { position: absolute; top: 10px; right: 15px; color: white; font-size: 1.5rem; cursor: pointer; }
+        .modal-overlay.active .modal-content { transform: scale(1); }
+        .close-btn { position: absolute; top: 10px; right: 15px; color: #9CA3AF; font-size: 1.5rem; cursor: pointer; }
         
-        /* Modals Specifics */
-        .jazz-easy-text { font-family: 'Poppins'; font-size: 1.8rem; color: var(--gold); font-weight: bold; margin: 10px 0;}
-        .whatsapp-btn { background: #25D366; color: white; border: none; padding: 10px 20px; border-radius: 20px; font-weight: bold; font-size: 1.1rem; cursor: pointer; width: 100%; margin-top: 10px;}
-        .confirm-btn { background: var(--primary); color: white; border: none; padding: 12px; border-radius: 20px; font-weight: bold; font-size: 1.2rem; cursor: pointer; width: 100%; margin-top: 15px; font-family: 'Noto Nastaliq Urdu';}
+        .modal-btn-wa { background: #25D366; color: white; border: none; padding: 12px; border-radius: 20px; font-family: 'Noto Nastaliq Urdu'; font-size: 1.2rem; cursor: pointer; width: 100%; margin-top: 15px; font-weight: bold;}
+        .modal-btn-confirm { background: var(--primary); color: white; border: none; padding: 12px; border-radius: 20px; font-family: 'Noto Nastaliq Urdu'; font-size: 1.2rem; cursor: pointer; width: 100%; margin-top: 10px; font-weight: bold;}
 
-        /* Ticker */
-        .dua-ticker-container {
-            width: 100%; background: rgba(0,0,0,0.8); border-top: 1px solid rgba(251, 191, 36, 0.3);
-            color: var(--gold); padding: 8px 0; font-size: 1.1rem; margin-top: auto; 
-        }
+        .hadith-card { border-top: 3px solid var(--gold); padding: 15px;}
+        .dua-ticker-container { width: 100%; background: rgba(0,0,0,0.8); border-top: 1px solid rgba(251, 191, 36, 0.3); color: var(--gold); padding: 8px 0; font-size: 1.1rem; margin-top: auto; }
     </style>
 </head>
 <body>
 
-    <audio id="bgAudio" src="dua.mp3" loop></audio>
+    <audio id="bgAudio" src="dua.mp3" loop preload="auto"></audio>
     <audio id="coinSound" src="https://assets.mixkit.co/active_storage/sfx/2013/2013-preview.mp3"></audio>
-    <audio id="successVoice" src="kids_voice.mp3"></audio> 
 
-    <button class="audio-toggle" id="audioBtn" onclick="toggleAudio()">🔇 پلے تلاوت</button>
+    <div class="audio-indicator" id="audioToggle" onclick="toggleAudio()">🔊 آڈیو آن کریں</div>
+    
+    <img src="https://cdn-icons-png.flaticon.com/512/8202/8202688.png" alt="Lantern" class="lantern left">
+    <img src="https://cdn-icons-png.flaticon.com/512/8202/8202688.png" alt="Lantern" class="lantern right">
 
     <div class="container">
+        
         <div class="top-controls">
             <div class="timer-badge" id="countdownTimer">
-                <span>سحری میں باقی:</span>
+                <span style="font-size:1.2rem;">⏳</span> <span>سحری میں باقی:</span>
                 <span class="english-num" id="timeDigits">00:00:00</span>
             </div>
         </div>
 
         <div class="header-section">
             <h1 class="header-title">فری سحری پوائنٹ</h1>
-            <p class="emotional-text">کسی کے دسترخوان کی رونق بنیں 🥺</p>
+            <p class="emotional-text">کسی کے دسترخوان کی رونق بنیں</p>
         </div>
 
         <div class="content-wrapper">
@@ -230,7 +237,7 @@
                 <div class="stats-container">
                     <div class="stat-box">
                         <span class="stat-label">روز کا ہدف</span>
-                        <span class="stat-value english-num">8,000</span>
+                        <span class="stat-value english-num" style="color: #D1D5DB;">8,000</span>
                     </div>
                     <div class="stat-box">
                         <span class="stat-label" id="remainingLabel">باقی ضرورت</span>
@@ -243,72 +250,64 @@
                 
                 <div class="info-card">
                     <h3 class="card-heading">اپنا حصہ شامل کریں</h3>
+                    <p style="font-size: 1rem; color: #D1D5DB; margin:0;">آپ کا چھوٹا سا عمل کسی کی سحری کا سبب بنے گا۔</p>
+                    
                     <input type="range" id="donationSlider" min="320" max="8000" step="320" value="320" oninput="updateImpact()">
                     <div class="impact-text">
                         <span class="english-num" id="impactAmount">Rs. 320</span> = <span id="impactFamilies" class="english-num">1</span> گھر کی سحری
                     </div>
-                    <button class="btn-action" onclick="openDonateModal()">✨ ابھی عطیہ کریں ✨</button>
+                    
+                    <div class="account-box">
+                        <div class="provider-tags">
+                            <span class="tag jazz">JAZZCASH</span>
+                            <span class="tag easy">EASYPAISA</span>
+                        </div>
+                        <div class="donate-number english-num">0305-7242598</div>
+                        <p style="font-size: 1.1rem; font-family: 'Poppins'; margin:0; font-weight:600; color:#F9FAFB;">MUHAMMAD ASGHAR</p>
+                    </div>
+
+                    <button class="btn-donate" onclick="openModal()">✨ ابھی عطیہ کریں ✨</button>
+                    <button class="btn-share" onclick="shareOnWhatsApp()">📲 ثواب کے لیے شیئر کریں</button>
                 </div>
 
                 <div class="info-card">
-                    <h3 class="card-heading">اپنے نام کی دعا حاصل کریں</h3>
-                    <input type="text" id="userNameInput" class="input-text" placeholder="اپنا نام یہاں لکھیں...">
-                    <button class="btn-action" style="background: linear-gradient(135deg, #34D399 0%, #059669 100%); color: white;" onclick="generateDuaCard()">دعا کارڈ بنائیں 🤲</button>
-                </div>
-
-                <div class="info-card">
-                    <h3 class="card-heading">خاموش دعائیں</h3>
+                    <h3 class="card-heading">خاموش دعائیں 🤲</h3>
                     <p style="font-size: 0.9rem; color: #9CA3AF;">بنا نام بتائے اپنی پریشانی لکھیں، سحری کھانے والے آپ کے لیے دعا کریں گے۔</p>
-                    <input type="text" id="prayerInput" class="input-text" placeholder="اپنی دعا یا گزارش لکھیں...">
-                    <button class="btn-action" style="background: #1F2937; color: white; border: 1px solid var(--gold); padding: 8px;" onclick="submitPrayer()">دعا کی درخواست بھیجیں</button>
+                    <input type="text" id="prayerInput" class="input-text" placeholder="اپنی دعا یہاں لکھیں...">
+                    <button class="btn-submit" onclick="submitPrayer()">دعا کی درخواست بھیجیں</button>
                     <div class="prayer-list" id="prayersList">
                         </div>
                 </div>
 
-                <div class="info-card" style="padding: 15px;">
-                    <h3 class="card-heading" style="font-size: 1.2rem; margin:0;">جميل آباد میں آج کی خوشیاں</h3>
-                    <div class="heatmap-container">
-                        <div class="pulse-dot">❤️</div>
-                    </div>
+                <div class="info-card hadith-card">
+                    <h3 class="card-heading">✨ آج کی حدیث</h3>
+                    <p style="font-size: 1.2rem; line-height: 2; margin-bottom: 0; color: #F9FAFB;">"جس نے کسی روزہ دار کو روزہ افطار کرایا، اس کے لئے بھی روزہ دار کے برابر ثواب ہے۔"</p>
                 </div>
-
             </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="donateModal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <h2 style="color: var(--primary); font-family: 'Noto Nastaliq Urdu'; margin-top: 0;">جزاک اللہ!</h2>
+            <p style="font-size: 1.1rem; color: #F9FAFB;">براہ کرم منتخب کردہ رقم اس نمبر پر بھیجیں:</p>
+            <div style="font-family: 'Poppins'; font-size: 2.2rem; color: var(--gold); font-weight: bold; letter-spacing: 2px;">0305-7242598</div>
+            <p style="color: #9CA3AF; font-family: 'Poppins'; margin-bottom: 20px;">M. Asghar</p>
+            
+            <button class="modal-btn-wa" onclick="sendScreenshot()">📲 واٹس ایپ پر رسید بھیجیں</button>
+            <button class="modal-btn-confirm" onclick="confirmDonation()">✅ میں نے رقم بھیج دی ہے</button>
         </div>
     </div>
 
     <div class="dua-ticker-container">
         <marquee behavior="scroll" direction="right" scrollamount="6">
-            Gateway 2 Jannah کے تحت فیصل آباد میں فری سحری پوائنٹ 🌙 | اے اللہ! ہمارے رزق میں برکت عطا فرما۔ آمین 🤲 | آپ کے عطیات 25 گھروں کی سحری کا سبب بن رہے ہیں۔
+            Gateway 2 Jannah کے تحت فیصل آباد میں فری سحری پوائنٹ 🌙 | اے اللہ! ہمارے رزق میں برکت عطا فرما اور ہمیں دوسروں کے کام آنے کی توفیق دے۔ آمین 🤲
         </marquee>
     </div>
 
-    <div class="modal-overlay" id="donateModal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeModal('donateModal')">&times;</span>
-            <h2 style="color: var(--primary); margin-top:0;">جزاک اللہ!</h2>
-            <p style="font-size: 1.1rem;">براہ کرم یہ رقم اس نمبر پر بھیجیں:</p>
-            <div class="jazz-easy-text">0305-7242598</div>
-            <p style="color: #9CA3AF; font-family: 'Poppins';">M. Asghar (JazzCash/EasyPaisa)</p>
-            
-            <button class="whatsapp-btn" onclick="sendScreenshot()">📲 واٹس ایپ پر رسید بھیجیں</button>
-            <button class="confirm-btn" onclick="confirmDonation()">✅ میں نے رقم بھیج دی ہے</button>
-        </div>
-    </div>
-
-    <div class="modal-overlay" id="duaModal">
-        <div class="modal-content" style="background: linear-gradient(to bottom, #064E3B, #022C22); border-color: var(--primary);">
-            <span class="close-btn" onclick="closeModal('duaModal')">&times;</span>
-            <div style="font-size: 3rem; margin-bottom: -10px;">🤲</div>
-            <h2 style="color: var(--gold); margin-bottom: 5px;">Gateway 2 Jannah</h2>
-            <p style="font-size: 1.2rem; color: white; line-height: 1.8;">
-                اللہ پاک <strong id="duaNameDisplay" style="color: var(--primary); font-size: 1.5rem;"></strong> کے رزق اور عمر میں برکت عطا فرمائے، اور ان کی تمام جائز دعائیں قبول فرمائے۔ آمین!
-            </p>
-            <p style="color: #9CA3AF; font-size: 0.9rem;">(اسکرین شاٹ لے کر محفوظ کر لیں)</p>
-        </div>
-    </div>
-
     <script>
-        // --- FIREBASE SETUP ---
+        // --- FIREBASE CONFIG ---
         const firebaseConfig = {
             apiKey: "AIzaSyBX1khgSPRWUDmaL9nwDsDhSefLl18-u_g",
             authDomain: "jannahpath-74910.firebaseapp.com",
@@ -321,29 +320,31 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
         const dailyGoal = 8000;
-        let globalFunds = 0;
-        let previousFunds = -1;
+        
+        window.globalFunds = 0; // Keeping track for user donation
+        let previousFunds = -1; 
 
-        // --- BACKGROUND AUDIO TOGGLE ---
-        let bgAudio = document.getElementById("bgAudio");
-        let isPlaying = false;
+        // --- BACKGROUND AUDIO (Smart Auto-Play Logic) ---
+        const audio = document.getElementById("bgAudio");
+        audio.volume = 0.3; // Dheemi awaz (Slow volume)
+        let audioPlayed = false;
+
         function toggleAudio() {
-            if(isPlaying) {
-                bgAudio.pause();
-                document.getElementById("audioBtn").innerText = "🔇 پلے تلاوت";
-            } else {
-                bgAudio.play();
-                document.getElementById("audioBtn").innerText = "🔊 میوٹ کریں";
-            }
-            isPlaying = !isPlaying;
+            if(audio.paused) { audio.play(); document.getElementById("audioToggle").innerText = "🔇 آڈیو بند کریں"; } 
+            else { audio.pause(); document.getElementById("audioToggle").innerText = "🔊 آڈیو آن کریں"; }
+            audioPlayed = true;
         }
 
-        // --- BUBBLE ANIMATION ---
+        // Koshish karega khud play karne ki, na hua to screen touch pe karega
+        window.addEventListener('click', () => {
+            if(!audioPlayed) { audio.play().catch(e => console.log("Audio blocked")); audioPlayed = true; document.getElementById("audioToggle").innerText = "🔇 آڈیو بند کریں"; }
+        }, { once: true });
+
+        // --- BUBBLES ---
         function createBubbles() {
             const liquid = document.getElementById('jarLiquid');
             setInterval(() => {
-                let bubble = document.createElement('div');
-                bubble.className = 'bubble';
+                let bubble = document.createElement('div'); bubble.className = 'bubble';
                 let size = Math.random() * 15 + 5;
                 bubble.style.width = size + 'px'; bubble.style.height = size + 'px';
                 bubble.style.left = Math.random() * 90 + '%';
@@ -354,119 +355,100 @@
         }
         createBubbles();
 
-        // --- LIVE JAR LISTENER ---
+        // --- FIREBASE LIVE JAR ---
         db.ref('sehri_campaign/funds').on('value', (snapshot) => {
-            globalFunds = snapshot.val() || 0;
+            window.globalFunds = snapshot.val() || 0;
             
-            let percentage = (globalFunds / dailyGoal) * 100;
+            let percentage = (window.globalFunds / dailyGoal) * 100;
             if (percentage > 100) percentage = 100;
-            
             document.getElementById('jarLiquid').style.height = percentage + '%';
-            document.getElementById('progressText').innerText = globalFunds.toLocaleString();
+            document.getElementById('progressText').innerText = window.globalFunds.toLocaleString();
 
-            const remValue = document.getElementById('remainingValue');
             const remLabel = document.getElementById('remainingLabel');
-            const remaining = dailyGoal - globalFunds;
-
+            const remValue = document.getElementById('remainingValue');
+            const remaining = dailyGoal - window.globalFunds;
+            
+            remValue.classList.remove('complete');
             if (remaining > 0) {
-                remLabel.innerText = "باقی ضرورت";
-                remValue.innerText = remaining.toLocaleString();
-                remValue.style.color = "var(--gold)";
+                remLabel.innerText = "باقی ضرورت"; remValue.innerText = remaining.toLocaleString(); remValue.style.color = "var(--gold)";
             } else {
-                remLabel.innerText = "سٹیٹس";
-                remValue.innerText = "مکمل الحمدللہ";
-                remValue.style.color = "var(--primary)";
-                remValue.style.fontSize = "1.2rem";
+                remLabel.innerText = "سٹیٹس"; remValue.innerText = "مکمل الحمدللہ"; remValue.classList.add('complete');
             }
 
-            // Play Sound if increased
-            if (previousFunds !== -1 && globalFunds > previousFunds && percentage < 100) {
-                document.getElementById('coinSound').play().catch(e => console.log("Audio blocked"));
+            if (previousFunds !== -1 && window.globalFunds > previousFunds) {
+                document.getElementById('coinSound').play().catch(e=>{});
             }
 
-            // SUCCESS VOICE NOTE & CONFETTI (When hits 100%)
             if (percentage >= 100 && previousFunds !== -1 && previousFunds < dailyGoal) {
-                // Play Kid's Voice Note!
-                document.getElementById('successVoice').play().catch(e => console.log("Audio blocked"));
-                
-                const duration = 5 * 1000;
-                const end = Date.now() + duration;
+                const end = Date.now() + 3000;
                 (function frame() {
                     confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#FBBF24', '#34D399'] });
                     confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#FBBF24', '#34D399'] });
-                    if (Date.now() < end) { requestAnimationFrame(frame); }
+                    if (Date.now() < end) requestAnimationFrame(frame);
                 }());
             }
-            previousFunds = globalFunds;
+            previousFunds = window.globalFunds;
         });
 
-        // --- USER DIRECT DONATION ---
+        // --- SILENT PRAYER BOARD (KHAMOSH DUAIN) ---
+        function submitPrayer() {
+            let val = document.getElementById('prayerInput').value;
+            if(val.trim() === "") return;
+            db.ref('sehri_campaign/prayers').push({ text: val, time: Date.now() });
+            document.getElementById('prayerInput').value = "";
+        }
+
+        db.ref('sehri_campaign/prayers').limitToLast(10).on('value', (snapshot) => {
+            const list = document.getElementById('prayersList');
+            list.innerHTML = '';
+            let prayers = [];
+            snapshot.forEach(child => { prayers.push(child.val().text); });
+            prayers.reverse().forEach(text => {
+                let div = document.createElement('div');
+                div.className = 'prayer-item'; div.innerText = text;
+                list.appendChild(div);
+            });
+        });
+
+        // --- UI & MODAL LOGIC ---
         function updateImpact() {
             const amount = document.getElementById('donationSlider').value;
             document.getElementById('impactAmount').innerText = `Rs. ${parseInt(amount).toLocaleString()}`;
             document.getElementById('impactFamilies').innerText = Math.floor(amount / 320);
         }
 
-        function openDonateModal() { document.getElementById('donateModal').style.display = 'flex'; }
-        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-        
+        function openModal() { document.getElementById('donateModal').classList.add('active'); }
+        function closeModal() { document.getElementById('donateModal').classList.remove('active'); }
+
         function sendScreenshot() {
-            let amount = document.getElementById('donationSlider').value;
-            const text = encodeURIComponent(`السلام علیکم! میں نے ${amount} روپے فری سحری کے لیے بھیجے ہیں۔ رسید ساتھ ہے۔`);
+            const amount = document.getElementById('donationSlider').value;
+            const text = encodeURIComponent(`السلام علیکم! میں نے فری سحری کے لیے ${amount} روپے بھیجے ہیں۔ رسید ساتھ ہے۔`);
             window.open(`https://wa.me/923057242598?text=${text}`, '_blank');
         }
 
         function confirmDonation() {
-            // Push directly to Firebase! (Admin can fix if fake)
-            let amountToAdd = parseInt(document.getElementById('donationSlider').value);
-            db.ref('sehri_campaign/funds').set(globalFunds + amountToAdd);
-            closeModal('donateModal');
-            document.getElementById('coinSound').play();
+            const amount = parseInt(document.getElementById('donationSlider').value);
+            // DIRECT FIREBASE UPDATE BY USER
+            db.ref('sehri_campaign/funds').set(window.globalFunds + amount);
+            closeModal();
+            document.getElementById('coinSound').play().catch(e=>{});
+            // Show thanks message
+            setTimeout(() => alert("جزاک اللہ! آپ کا عطیہ جار میں شامل کر دیا گیا ہے۔ اللہ قبول فرمائے۔"), 500);
         }
 
-        // --- DUA CARD ---
-        function generateDuaCard() {
-            let name = document.getElementById('userNameInput').value;
-            if(name.trim() === "") { alert("براہ کرم پہلے اپنا نام لکھیں۔"); return; }
-            document.getElementById('duaNameDisplay').innerText = name;
-            document.getElementById('duaModal').style.display = 'flex';
+        function shareOnWhatsApp() {
+            const text = encodeURIComponent("السلام علیکم! 🌙\nکیا آپ کسی کے روزے کی شروعات کا حصہ بننا چاہیں گے؟ 🥺\nفیصل آباد میں 25 مستحق گھروں تک سحری پہنچانے کے اس کارِ خیر میں ہمارا ساتھ دیں۔ صرف 320 روپے میں ایک گھر کی سحری کا ثواب کمائیں۔\n\nJazzCash / EasyPaisa: 03057242598 (M. Asghar)\n\nہماری ویب سائٹ پر لائیو ڈونیشن جار دیکھیں:\nhttps://jannahpath.github.io/Gateway2Jannah/");
+            window.open(`https://wa.me/?text=${text}`, '_blank');
         }
 
-        // --- SILENT PRAYER BOARD ---
-        function submitPrayer() {
-            let prayer = document.getElementById('prayerInput').value;
-            if(prayer.trim() === "") return;
-            // Push to Firebase
-            db.ref('sehri_campaign/prayers').push({ text: prayer, time: Date.now() });
-            document.getElementById('prayerInput').value = "";
-        }
-
-        // Load Prayers Live
-        db.ref('sehri_campaign/prayers').limitToLast(10).on('value', (snapshot) => {
-            const list = document.getElementById('prayersList');
-            list.innerHTML = '';
-            snapshot.forEach((child) => {
-                let p = document.createElement('div');
-                p.className = 'prayer-item';
-                p.innerText = child.val().text;
-                list.prepend(p); // Add to top
-            });
-        });
-
-        // --- TIMER ---
         function updateTimer() {
-            const now = new Date();
-            const sehriTime = new Date();
-            sehriTime.setHours(4, 45, 0, 0); 
+            const now = new Date(); const sehriTime = new Date(); sehriTime.setHours(4, 45, 0, 0); 
             if (now > sehriTime) sehriTime.setDate(sehriTime.getDate() + 1);
-            
             const diff = sehriTime - now;
             const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
             const s = Math.floor((diff % (1000 * 60)) / 1000);
-            
-            document.getElementById('timeDigits').innerText = 
-                `${h < 10 ? '0'+h : h}:${m < 10 ? '0'+m : m}:${s < 10 ? '0'+s : s}`;
+            document.getElementById('timeDigits').innerText = `${h < 10 ? '0'+h : h}:${m < 10 ? '0'+m : m}:${s < 10 ? '0'+s : s}`;
         }
         setInterval(updateTimer, 1000);
         
