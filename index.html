@@ -327,19 +327,13 @@
         window.globalFunds = 0; 
         let previousFunds = -1; 
 
-        // --- AUDIO LOGIC ---
+       // --- AUDIO LOGIC ---
         const audio = document.getElementById("bgAudio");
         audio.volume = 0.2; 
-        let audioPlayed = false;
 
-        function toggleAudio() {
-            if(audio.paused) { audio.play(); document.getElementById("audioToggle").innerText = "🔇 آڈیو بند کریں"; } 
-            else { audio.pause(); document.getElementById("audioToggle").innerText = "🔊 آڈیو آن کریں"; }
-            audioPlayed = true;
-        }
-
+        // یزر جیسے ہی سکرین پر کہیں بھی کلک کرے گا، آڈیو پلے ہو جائے گی
         window.addEventListener('click', () => {
-            if(!audioPlayed) { audio.play().catch(e => {}); audioPlayed = true; document.getElementById("audioToggle").innerText = "🔇 آڈیو بند کریں"; }
+            audio.play().catch(e => console.log("Audio play blocked by browser"));
         }, { once: true });
 
         // --- BUBBLES ---
