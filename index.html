@@ -71,32 +71,28 @@
         .emotional-text { font-size: 1.4rem; color: var(--gold); margin: 5px 0; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
 
         .content-wrapper { display: flex; flex-direction: column; gap: 30px; align-items: center; margin-top: 10px;}
-        @media (min-width: 900px) {
-            .content-wrapper { flex-direction: row; justify-content: center; align-items: flex-start; gap: 50px; }
-            .jar-section, .details-section { width: 45%; }
-            .header-title { font-size: 3.5rem; }
-            .emotional-text { font-size: 1.8rem; }
-        }
-
-        /* THE VIP JAR */
+        
+        /* THE VIP JAR - MOBILE SIZES */
         .jar-section { display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; width: 100%;}
         .jar-aura {
             position: absolute; width: 250px; height: 350px;
-            background: radial-gradient(circle, rgba(16, 185, 129, 0.1) 0%, rgba(0,0,0,0) 70%);
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.15) 0%, rgba(0,0,0,0) 70%);
             top: 40%; left: 50%; transform: translate(-50%, -50%); z-index: 0; pointer-events: none;
+            transition: all 0.5s ease;
         }
         .jar-wrapper { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; transform: translateZ(0);}
         .jar-lid {
             width: 140px; height: 25px; background: linear-gradient(to bottom, #FCE68E, #D4AF37, #996515);
             border-radius: 8px 8px 4px 4px; margin-bottom: -4px; z-index: 10; position: relative;
             box-shadow: 0 5px 10px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2);
+            transition: all 0.5s ease;
         }
         .glass-jar {
             width: 240px; height: 320px; background: rgba(255, 255, 255, 0.02); 
             border: 3px solid rgba(255, 255, 255, 0.2); border-top: none; border-radius: 8px 8px 60px 60px;
             position: relative; overflow: hidden;
             box-shadow: inset -10px -10px 30px rgba(0,0,0,0.5), inset 10px 10px 30px rgba(255,255,255,0.05), 0 15px 30px rgba(0,0,0,0.5);
-            backdrop-filter: blur(8px);
+            backdrop-filter: blur(8px); transition: all 0.5s ease;
         }
         .glass-jar::after {
             content: ''; position: absolute; top: 0; left: 10%; width: 15%; height: 100%;
@@ -120,18 +116,33 @@
         .amount-display {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
             font-size: 2.8rem; font-weight: 900; color: white;
-            text-shadow: 0 4px 15px rgba(0,0,0,0.8); z-index: 10; width: 100%; text-align: center;
+            text-shadow: 0 4px 15px rgba(0,0,0,0.8); z-index: 10; width: 100%; text-align: center; transition: all 0.5s ease;
         }
         .jar-base {
             width: 180px; height: 20px; background: linear-gradient(to right, #4B5563, #111827, #4B5563);
-            border-radius: 50%; margin-top: -8px; z-index: 1; box-shadow: 0 10px 20px rgba(0,0,0,0.6); border: 1px solid #374151;
+            border-radius: 50%; margin-top: -8px; z-index: 1; box-shadow: 0 10px 20px rgba(0,0,0,0.6); border: 1px solid #374151; transition: all 0.5s ease;
         }
 
-        .stats-container { display: flex; justify-content: center; gap: 10px; margin-top: 20px; width: 100%; max-width: 300px; }
-        .stat-box { background: rgba(0,0,0,0.4); border: 1px solid var(--glass-border); border-radius: 12px; padding: 10px 12px; text-align: center; flex: 1; backdrop-filter: blur(5px); }
-        .stat-label { display: block; font-size: 0.85rem; color: #9CA3AF; margin-bottom: 2px; }
-        .stat-value { font-size: 1.4rem; color: var(--gold); font-weight: 700; }
-        .stat-value.complete { font-size: 1rem; color: var(--primary); font-family: 'Noto Nastaliq Urdu', serif;}
+        /* 💻 DESKTOP LAYOUT (LARGE JAR) */
+        @media (min-width: 900px) {
+            .content-wrapper { flex-direction: row; justify-content: center; align-items: flex-start; gap: 60px; }
+            .jar-section, .details-section { width: 45%; }
+            .header-title { font-size: 3.8rem; }
+            .emotional-text { font-size: 1.8rem; }
+            
+            /* Bada Jar Desktop Ke Liye Taa Ke Jagah Khali Na Lage */
+            .glass-jar { width: 340px; height: 460px; border-radius: 12px 12px 80px 80px;}
+            .jar-lid { width: 200px; height: 35px; }
+            .jar-base { width: 260px; height: 25px; }
+            .jar-aura { width: 450px; height: 550px; }
+            .amount-display { font-size: 4rem; }
+        }
+
+        .stats-container { display: flex; justify-content: center; gap: 10px; margin-top: 20px; width: 100%; max-width: 340px; }
+        .stat-box { background: rgba(0,0,0,0.4); border: 1px solid var(--glass-border); border-radius: 12px; padding: 12px; text-align: center; flex: 1; backdrop-filter: blur(5px); }
+        .stat-label { display: block; font-size: 0.9rem; color: #9CA3AF; margin-bottom: 2px; }
+        .stat-value { font-size: 1.6rem; color: var(--gold); font-weight: 700; }
+        .stat-value.complete { font-size: 1.2rem; color: var(--primary); font-family: 'Noto Nastaliq Urdu', serif;}
 
         /* Details Section */
         .details-section { display: flex; flex-direction: column; gap: 15px; width: 100%; max-width: 500px; }
@@ -140,18 +151,18 @@
             padding: 20px; border-radius: 20px; border: 1px solid var(--glass-border);
             box-shadow: 0 10px 30px rgba(0,0,0,0.5); text-align: center;
         }
-        .card-heading { color: var(--primary); margin: 0 0 10px 0; font-size: 1.5rem; }
+        .card-heading { color: var(--primary); margin: 0 0 10px 0; font-size: 1.6rem; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
         
         input[type=range] { width: 100%; margin: 15px 0; accent-color: var(--primary); height: 6px; background: rgba(255,255,255,0.1); border-radius: 10px; outline: none; -webkit-appearance: none; }
         input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 26px; height: 26px; border-radius: 50%; background: var(--gold); cursor: pointer; box-shadow: 0 0 15px rgba(251, 191, 36, 0.8); border: 2px solid white; }
 
         .impact-text { font-size: 1.2rem; color: var(--text-light); background: rgba(16, 185, 129, 0.1); padding: 10px; border-radius: 10px; margin-bottom: 15px; border: 1px solid rgba(16, 185, 129, 0.2);}
-        .impact-text span.english-num { color: var(--gold); font-weight: bold; font-size: 1.4rem;}
+        .impact-text span.english-num { color: var(--gold); font-weight: bold; font-size: 1.5rem;}
 
         .account-box { background: rgba(0,0,0,0.4); border: 1px dashed var(--gold); border-radius: 12px; padding: 15px; margin-bottom: 10px; }
-        .donate-number { font-size: 2.2rem; color: var(--primary); font-weight: 700; letter-spacing: 2px; margin: 5px 0; }
+        .donate-number { font-size: 2.3rem; color: var(--primary); font-weight: 700; letter-spacing: 2px; margin: 5px 0; }
         .provider-tags { display: flex; justify-content: center; gap: 8px; margin-bottom: 5px; }
-        .tag { font-family: 'Poppins'; font-size: 0.8rem; padding: 4px 10px; border-radius: 15px; color: white; font-weight: bold; }
+        .tag { font-family: 'Poppins'; font-size: 0.85rem; padding: 4px 12px; border-radius: 15px; color: white; font-weight: bold; }
         .tag.jazz { background: #E11422; } .tag.easy { background: #40B14A; }
 
         /* ACTION BUTTONS */
@@ -175,7 +186,7 @@
         .prayer-item { border-bottom: 1px solid rgba(255,255,255,0.1); padding: 8px 0; color: #D1D5DB; font-size: 1rem; animation: fadeIn 0.5s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* POPUP MODAL (Smooth 16k Feel) */
+        /* POPUP MODAL */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.7); backdrop-filter: blur(8px);
@@ -202,6 +213,7 @@
 
     <audio id="bgAudio" src="dua.mp3" loop preload="auto"></audio>
     <audio id="coinSound" src="https://assets.mixkit.co/active_storage/sfx/2013/2013-preview.mp3"></audio>
+    <audio id="successVoice" src="kids_voice.mp3"></audio>
 
     <div class="audio-indicator" id="audioToggle" onclick="toggleAudio()">🔊 آڈیو آن کریں</div>
     
@@ -302,12 +314,11 @@
 
     <div class="dua-ticker-container">
         <marquee behavior="scroll" direction="right" scrollamount="6">
-            Gateway 2 Jannah کے تحت فیصل آباد میں فری سحری پوائنٹ 🌙 | اے اللہ! ہمارے رزق میں برکت عطا فرما اور ہمیں دوسروں کے کام آنے کی توفیق دے۔ آمین 🤲
+            Gateway 2 Jannah کے تحت فیصل آباد میں فری سحری پوائنٹ 🌙 | اے اللہ! ہمارے رزق میں برکت عطا فرما۔ آمین 🤲
         </marquee>
     </div>
 
     <script>
-        // --- FIREBASE CONFIG ---
         const firebaseConfig = {
             apiKey: "AIzaSyBX1khgSPRWUDmaL9nwDsDhSefLl18-u_g",
             authDomain: "jannahpath-74910.firebaseapp.com",
@@ -321,12 +332,12 @@
         const db = firebase.database();
         const dailyGoal = 8000;
         
-        window.globalFunds = 0; // Keeping track for user donation
+        window.globalFunds = 0; 
         let previousFunds = -1; 
 
-        // --- BACKGROUND AUDIO (Smart Auto-Play Logic) ---
+        // --- AUDIO LOGIC ---
         const audio = document.getElementById("bgAudio");
-        audio.volume = 0.3; // Dheemi awaz (Slow volume)
+        audio.volume = 0.2; 
         let audioPlayed = false;
 
         function toggleAudio() {
@@ -335,9 +346,8 @@
             audioPlayed = true;
         }
 
-        // Koshish karega khud play karne ki, na hua to screen touch pe karega
         window.addEventListener('click', () => {
-            if(!audioPlayed) { audio.play().catch(e => console.log("Audio blocked")); audioPlayed = true; document.getElementById("audioToggle").innerText = "🔇 آڈیو بند کریں"; }
+            if(!audioPlayed) { audio.play().catch(e => {}); audioPlayed = true; document.getElementById("audioToggle").innerText = "🔇 آڈیو بند کریں"; }
         }, { once: true });
 
         // --- BUBBLES ---
@@ -375,12 +385,13 @@
                 remLabel.innerText = "سٹیٹس"; remValue.innerText = "مکمل الحمدللہ"; remValue.classList.add('complete');
             }
 
-            if (previousFunds !== -1 && window.globalFunds > previousFunds) {
+            if (previousFunds !== -1 && window.globalFunds > previousFunds && percentage < 100) {
                 document.getElementById('coinSound').play().catch(e=>{});
             }
 
             if (percentage >= 100 && previousFunds !== -1 && previousFunds < dailyGoal) {
-                const end = Date.now() + 3000;
+                document.getElementById('successVoice').play().catch(e=>{});
+                const end = Date.now() + 4000;
                 (function frame() {
                     confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#FBBF24', '#34D399'] });
                     confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#FBBF24', '#34D399'] });
@@ -390,7 +401,12 @@
             previousFunds = window.globalFunds;
         });
 
-        // --- SILENT PRAYER BOARD (KHAMOSH DUAIN) ---
+        // --- PRAYER BOARD (FIREBASE LINKED) ---
+        function formatTime(ms) {
+            let date = new Date(ms);
+            return date.getHours() + ":" + (date.getMinutes()<10?'0':'') + date.getMinutes();
+        }
+
         function submitPrayer() {
             let val = document.getElementById('prayerInput').value;
             if(val.trim() === "") return;
@@ -402,15 +418,16 @@
             const list = document.getElementById('prayersList');
             list.innerHTML = '';
             let prayers = [];
-            snapshot.forEach(child => { prayers.push(child.val().text); });
-            prayers.reverse().forEach(text => {
+            snapshot.forEach(child => { prayers.push(child.val()); });
+            prayers.reverse().forEach(p => {
                 let div = document.createElement('div');
-                div.className = 'prayer-item'; div.innerText = text;
+                div.className = 'prayer-item'; 
+                div.innerHTML = `<span>${p.text}</span> <span style="font-size:0.7rem; color:#6B7280; display:block;">${formatTime(p.time)}</span>`;
                 list.appendChild(div);
             });
         });
 
-        // --- UI & MODAL LOGIC ---
+        // --- UI & MODAL ---
         function updateImpact() {
             const amount = document.getElementById('donationSlider').value;
             document.getElementById('impactAmount').innerText = `Rs. ${parseInt(amount).toLocaleString()}`;
@@ -428,12 +445,9 @@
 
         function confirmDonation() {
             const amount = parseInt(document.getElementById('donationSlider').value);
-            // DIRECT FIREBASE UPDATE BY USER
             db.ref('sehri_campaign/funds').set(window.globalFunds + amount);
             closeModal();
             document.getElementById('coinSound').play().catch(e=>{});
-            // Show thanks message
-            setTimeout(() => alert("جزاک اللہ! آپ کا عطیہ جار میں شامل کر دیا گیا ہے۔ اللہ قبول فرمائے۔"), 500);
         }
 
         function shareOnWhatsApp() {
