@@ -31,14 +31,7 @@
 
         .english-num { font-family: 'Poppins', sans-serif; }
 
-        /* Audio Indicator Badge */
-        .audio-indicator {
-            position: fixed; top: 15px; left: 15px; z-index: 100;
-            background: rgba(0,0,0,0.5); border: 1px solid var(--gold); color: var(--gold);
-            padding: 5px 12px; border-radius: 20px; font-size: 0.9rem; cursor: pointer;
-            backdrop-filter: blur(5px); transition: 0.3s;
-        }
-
+       
         /* Lanterns Optimized */
         .lantern {
             position: absolute; top: -10px; width: 50px; 
@@ -215,7 +208,6 @@
     <audio id="coinSound" src="https://assets.mixkit.co/active_storage/sfx/2013/2013-preview.mp3"></audio>
     <audio id="successVoice" src="kids_voice.mp3"></audio>
 
-    <div class="audio-indicator" id="audioToggle" onclick="toggleAudio()">🔊 آڈیو آن کریں</div>
     
     <img src="https://cdn-icons-png.flaticon.com/512/8202/8202688.png" alt="Lantern" class="lantern left">
     <img src="https://cdn-icons-png.flaticon.com/512/8202/8202688.png" alt="Lantern" class="lantern right">
